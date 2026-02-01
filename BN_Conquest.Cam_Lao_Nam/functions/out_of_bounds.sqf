@@ -1,7 +1,6 @@
 //this code is in a trigger
 //[thisTrigger] execVM "functions\out_of_bounds.sqf";
 
-
 params ["_trigger"];
 
 {
@@ -30,8 +29,9 @@ params ["_trigger"];
                     sleep 1;
                 };
 
+                _unit setVariable ["zoneTimer", nil, true];
+
                 if (!alive _unit) exitWith {
-                    _unit setVariable ["zoneTimer", nil, true];
                 };
 
                 if (_unit inArea _trg) then {
@@ -46,10 +46,7 @@ params ["_trigger"];
                     sleep 5;
                     _unit setDamage 1;
                 };
-
-                _unit setVariable ["zoneTimer", nil, true];
             };
         };
     };
 } forEach allPlayers;
-

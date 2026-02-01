@@ -4,7 +4,7 @@
 params ["_trigger"];
 
 {
-    if (isPlayer _x && alive _x && side _x == west && isNil {_x getVariable "zoneTimer"}) then {
+    if (isPlayer _x && alive _x && side _x == west && isNil {_x getVariable "RedZoneTimer"}) then {
         private _unit = _x;
         
         if (local _unit) then {
@@ -14,7 +14,7 @@ params ["_trigger"];
                     params ["_unit", "_trg"];
                     private _countdown = 20;
 
-                    _unit setVariable ["zoneTimer", true, true];
+                    _unit setVariable ["RedZoneTimer", true, true];
 
                     while {_countdown > 0 && (_unit inArea _trg) && alive _unit} do {
                         private _msg = format [
@@ -26,8 +26,9 @@ params ["_trigger"];
                         sleep 1;
                     };
 
+                    _unit setVariable ["RedZoneTimer", nil, true];
+
                     if (!alive _unit) exitWith {
-                        _unit setVariable ["zoneTimer", nil, true];
                     };
 
                     // If the player is still in the area after the countdown, they failed
@@ -44,8 +45,6 @@ params ["_trigger"];
                         sleep 2;
                         [""] remoteExec ["BIS_fnc_dynamicText", _unit];
                     };
-
-                    _unit setVariable ["zoneTimer", nil, true];
                 };
             };
         };
