@@ -1,0 +1,56 @@
+/*
+todo list 		
+marker for command tank
+make it so you can respawn at the command tank
+ARSENAL initialization 
+look at the base protection 
+look at keeping KSs on dead body's
+look in to the AA
+look at add hints to respawn menu to help new players know why they cant spawn|
+look in to magrepack
+look at the secter spawn check for players nearby and dont spawn if players are near by
+*/
+
+
+_this addEventHandler ["GetIn", {
+    params ["_vehicle", "_role", "_unit", "_turret"];
+    [_unit] spawn {
+        private _player = _this select 0;
+        while {vehicle _player != _player} do {
+            if (cameraView != "INTERNAL") then {
+                _player switchCamera "INTERNAL";
+            };
+            sleep 0.1;
+        };
+    };
+}];
+
+
+
+[_popupMessage, 0, 0.8, 2, 0, 0, 7017] spawn bis_fnc_dynamicText;
+
+[
+  text,         // 0 - Structured text
+  posX,         // 1 - Screen X position (-1 = center)
+  posY,         // 2 - Screen Y position (0 = top)
+  duration,     // 3 - How long the text stays visible (in seconds)
+  fadeInTime,   // 4 - Fade in duration (seconds)
+  fadeOutTime,  // 5 - Fade out duration (seconds)
+  id            // 6 - ID (can be used to override/update text)
+]
+
+
+vn_bomb_500_blu1b_fb_ammo
+vn_bomb_100_m47_wp_ammo
+vn_bomb_750_blu1b_fb_ammo
+
+private _confirmed = [
+    "Are you sure you want to ***?",
+    "Confirmation",
+    "Yes",
+    "Cancel"
+] call BIS_fnc_guiMessage;
+
+if (_confirmed) then {
+
+    };
