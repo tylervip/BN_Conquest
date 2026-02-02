@@ -36,6 +36,7 @@ class CfgFunctions {
 		{
 			file = "functions\magRepack";
             class ammo_repack {};
+            class repackAllMags {};
 		};
 	};
 	

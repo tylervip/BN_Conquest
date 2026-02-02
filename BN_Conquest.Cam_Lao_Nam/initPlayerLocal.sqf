@@ -25,4 +25,5 @@ player enableFatigue false;
 []execVM "Killstreak\init_killstreak.sqf";
 
 []execVM "functions\earplugs.sqf";
+[]execVM "functions\magRepack\init_magRepack.sqf";
 [player] execVM "EventHandler\fn_registerEH.sqf";

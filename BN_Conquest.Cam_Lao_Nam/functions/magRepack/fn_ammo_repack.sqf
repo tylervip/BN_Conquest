@@ -39,4 +39,6 @@ if (_rem > 0) then {
 };
 
 // Show hint
-hint "All mags repacked";
+hintSilent "Mags Repacked";
+sleep 2;
+hintSilent "";
