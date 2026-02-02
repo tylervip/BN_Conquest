@@ -4,12 +4,13 @@
     - a friendly group member
     - a captured sector
     - a friendly base
+    - a mobile respawn vehicle (when tent is deployed)
     Map stays open until a valid click is chosen.
 */
 
 cutText [
     "<t color='#FF6000' size='1.2' font='PuristaBold' align='center'>
-    Select a captured sector, your base, or a group member to redeploy.
+    Select a captured sector, your base, mobile respawn, or a group member to redeploy.
     </t>",
     "PLAIN DOWN", -1, true, true
 ];
@@ -22,6 +23,7 @@ onMapSingleClick {
     private _clickpos = _pos;
     private _side = side player;
     private _finalPos = [0,0,0];
+    private _spawnVehicle = objNull;
 
     private _distance = 100;
     private _maxAttempts = 20;
@@ -95,10 +97,34 @@ onMapSingleClick {
     };
 
     // ----------------------
+    // Mobile respawn vehicle
+    // ----------------------
+    if (_finalPos isEqualTo [0,0,0]) then {
+        {
+            _x params ["_vehicle", "_vehicleSide"];
+            if (_side != _vehicleSide) then { continue };
+            if (isNil {_vehicle} || {isNull _vehicle}) then { continue };
+            if (!alive _vehicle) then { continue };
+            
+            // Only allow spawn if tent is deployed  (hide_tent == 0) - marker is visible
+            if (_vehicle animationPhase "hide_tent" == 1) then { continue };
+            
+            private _vehiclePos = getPos _vehicle;
+            if (_clickpos distance2D _vehiclePos < _clickRadius) exitWith {
+                _finalPos = _vehiclePos;
+                _spawnVehicle = _vehicle;
+            };
+        } forEach [[mobile_respawn, west], [mobile_respawn_1, east]];
+    };
+
+    // ----------------------
     // Final
     // ----------------------
     if !(_finalPos isEqualTo [0,0,0]) then {
         player setPosATL _finalPos;
+        if (!isNull _spawnVehicle) then {
+            player moveInCargo _spawnVehicle;
+        };
         player setVariable ["inDebugRespawn", false, true];
         cutText ["", "PLAIN", -1, true, true];
         openMap [false,false];

@@ -14,5 +14,6 @@ player enableFatigue false;
 player setUnitLoadout(player getVariable["SavedLoadout", []]);
 
 player setVariable ["inDebugRespawn", true, true];
+[]execVM "functions\magRepack\init_magRepack.sqf";
 
 execVM "custom_respawn\init_respawn.sqf";
