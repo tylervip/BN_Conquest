@@ -11,5 +11,4 @@ execVM "functions\save_loadout_box.sqf";
 execVM "functions\mobile_respawn_teleport.sqf";
 
 execVM "Killstreak\availableKillstreaks.sqf";	//care_package
-//[] execVM "functions\grenade\fn_grenadeThrowback.sqf";
 

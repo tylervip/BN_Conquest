@@ -38,4 +38,21 @@ class CfgFunctions {
             class ammo_repack {};
 		};
 	};
+	
+	class LEON_COD
+	{
+		class grenade
+		{
+			file = "functions\grenade\functions";
+			
+			class preInit { preInit = 1; };
+			class addEHKeybind {};
+			class draw3DIcon {};
+			class isUnitAwake {};
+			class isUnitDown {};
+			class onKeyDown {};
+			class pickGrenade {};
+			class throwGrenade {};
+		};
+	};
 };
