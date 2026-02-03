@@ -56,4 +56,25 @@ class CfgFunctions {
 			class throwGrenade {};
 		};
 	};
+	
+	// Mobile Respawn System
+	class MRS {
+		class main {
+			file = "mobile_respawn";
+			class init {};
+			class initMarkers {};
+			class initTeleport {};
+		};
+		class markers {
+			file = "mobile_respawn";
+			class createMarker {};
+			class deleteMarker {};
+		};
+		class helpers {
+			file = "mobile_respawn";
+			class isTentDeployed {};
+			class getVehicleForSide {};
+			class canSpawnAt {};
+		};
+	};
 };

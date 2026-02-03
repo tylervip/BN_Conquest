@@ -4,11 +4,13 @@
     Call from initPlayerLocal.sqf via: [] execVM "functions\magRepack\init_magRepack.sqf";
 */
 
+if (!hasInterface) exitWith {};
+
 [] spawn {
     waitUntil { !isNull player };
     sleep 1;
 
-    // Add action to player
+    // Add action to player (only visible to self)
     player addAction [
         "<t color='#ffff00'>Repack Ammo</t>",
         { [] call functions_fnc_repackAllMags; },
@@ -17,7 +19,7 @@
         false,
         true,
         "",
-        "({_x select 1 > 0 && _x select 1 < getNumber (configFile >> 'CfgMagazines' >> (_x select 0) >> 'count') && !(_x select 2)} count (magazinesAmmoFull _this)) > 1",
+        "_this == _originalTarget && {({_x select 1 > 0 && _x select 1 < getNumber (configFile >> 'CfgMagazines' >> (_x select 0) >> 'count') && !(_x select 2)} count (magazinesAmmoFull _this)) > 1}",
         3
     ];
 };

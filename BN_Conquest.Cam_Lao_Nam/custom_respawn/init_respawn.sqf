@@ -101,20 +101,22 @@ onMapSingleClick {
     // ----------------------
     if (_finalPos isEqualTo [0,0,0]) then {
         {
-            _x params ["_vehicle", "_vehicleSide"];
+            _x params ["_vehicle", "_markerName", "_vehicleSide"];
+            
+            // Validation checks
             if (_side != _vehicleSide) then { continue };
             if (isNil {_vehicle} || {isNull _vehicle}) then { continue };
             if (!alive _vehicle) then { continue };
             
-            // Only allow spawn if tent is deployed  (hide_tent == 0) - marker is visible
-            if (_vehicle animationPhase "hide_tent" == 1) then { continue };
+            // Tent must be deployed (hide_tent: 0 = deployed, 1 = stowed)
+            if ((_vehicle animationPhase "hide_tent") != 0) then { continue };
             
             private _vehiclePos = getPos _vehicle;
             if (_clickpos distance2D _vehiclePos < _clickRadius) exitWith {
                 _finalPos = _vehiclePos;
                 _spawnVehicle = _vehicle;
             };
-        } forEach [[mobile_respawn, west], [mobile_respawn_1, east]];
+        } forEach MRS_vehicles;
     };
 
     // ----------------------

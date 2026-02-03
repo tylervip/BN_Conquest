@@ -7,8 +7,8 @@ execVM "functions\spawnAI_west.sqf";
 execVM "functions\delete_Group.sqf";
 execVM "functions\save_loadout_box.sqf";
 
-execVM "functions\mobile_respawn_marker.sqf";
-execVM "functions\mobile_respawn_teleport.sqf";
+// Mobile Respawn System
+call MRS_fnc_init;
 
 execVM "Killstreak\availableKillstreaks.sqf";	//care_package
 
