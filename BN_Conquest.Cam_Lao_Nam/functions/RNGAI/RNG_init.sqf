@@ -4,7 +4,7 @@ RNG_off = false;
 // Which sides have RNG AI enabled: "ALL", "EAST", "WEST", "GUER"
 RNG_sides = "ALL";
 // Activation range in meters for AI to react and use RNG behavior
-RNG_range = 30;
+RNG_range = 100;
 // Disable RNG AI on player-led groups (true = disabled on player groups)
 RNG_playergroup = true;
 

@@ -99,8 +99,7 @@
                 private _randomType = selectRandom _aiTypes;
                 private _unit = _group createUnit [_randomType, _spawnPos, [], 0, "NONE"];
                 [_unit] execVM "EventHandler\fn_registerEH.sqf";
-                
-                // Initialize RNG AI behavior
+
                 [_unit] call RNG_fnc_unit_init;
 
                 _unit addEventHandler ["Killed", {
@@ -109,6 +108,7 @@
 
                 _unit setCombatMode "RED";
                 _unit setBehaviour "COMBAT";
+                _unit speedMode "FULL";
 
                 [_unit] spawn {
                     params ["_unit"];
@@ -154,9 +154,10 @@
                                 };
 
                                 private _wp = _grp addWaypoint [position _targetSector, 0];
-                                _wp setWaypointType "SAD";
+                                _wp setWaypointType "move";
                                 _wp setWaypointBehaviour "COMBAT";
                                 _wp setWaypointCombatMode "RED";
+                                _wp setWaypointSpeed "FULL";
                             };
                         };
 

@@ -1,4 +1,5 @@
 //RNG AI by Toksa - Optimized for MP
+// Modified: More aggressive AI reaction - push instead of hide
 params ["_unit", "_firer"];
 
 // Only run where AI is local
@@ -12,10 +13,33 @@ if (!(_unit getvariable ["RNG_incombat",false]) && {vehicle _unit == _unit && {!
 	private _cooldown = _unit getvariable ["RNG_cooldown", (time - 1)];
 	
 	if (count _alltargets > 0) then {
-		if ((behaviour _unit == "SAFE" OR behaviour _unit == "AWARE" OR count _alltargets == 0 OR _firer distance _unit > 100 OR vehicle _firer iskindof "Tank") && !(side _firer == side _unit) && time > _cooldown && getsuppression _unit > 0.5) then {
+		private _suppression = getSuppression _unit;
+		private _firerDist = if (!isNull _firer) then {_firer distance _unit} else {999};
+		
+		// Determine behavior: aggressive push vs defensive cover
+		// Only go defensive if: very suppressed AND target is far OR vehicle threat
+		private _goDefensive = (
+			(behaviour _unit == "SAFE" OR behaviour _unit == "AWARE") && 
+			(_suppression > 0.8) && 
+			(_firerDist > 80)
+		) OR (
+			!isNull _firer && {vehicle _firer iskindof "Tank"}
+		);
+		
+		if (_goDefensive && time > _cooldown && !(side _firer == side _unit)) then {
+			// Defensive cover only against heavy suppression or vehicles
 			[_unit, _firer] spawn RNG_fnc_cover;
 		} else {
-			[_unit, _firer] spawn RNG_fnc_combat;
+			// AGGRESSIVE: Push with cover
+			// Higher chance to use aggressive cover-push instead of pure combat
+			if (random 1 < 0.6) then {
+				// Aggressive cover push - advance while using cover
+				[_unit, _firer] spawn RNG_fnc_cover;
+			} else {
+				// Standard combat behavior
+				[_unit, _firer] spawn RNG_fnc_combat;
+			};
+			
 			if (!isNull _firer) then {
 				_unit setvariable ["RNG_target", _firer];
 			};

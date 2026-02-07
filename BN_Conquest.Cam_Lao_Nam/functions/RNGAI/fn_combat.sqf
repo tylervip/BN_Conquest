@@ -1,4 +1,5 @@
 //RNG AI by Toksa - Optimized for MP
+// Added: building/wall avoidance
 params ["_unit", "_firer"];
 
 // Only run where AI is local
@@ -40,12 +41,51 @@ private _skill = ((1 - (_unit skillfinal "general")) * 5);
 private _lastObjectCheck = 0;
 private _objects = [];
 
+// ============= PATH CLEARANCE CHECK =============
+private _fnc_isPathClear = {
+	params ["_unit", "_targetPos"];
+	private _unitPos = eyePos _unit;
+	private _targetPosASL = if (count _targetPos == 3) then {
+		ATLToASL [_targetPos select 0, _targetPos select 1, (_targetPos select 2) + 1]
+	} else {
+		_unitPos
+	};
+	private _intersects = lineIntersectsSurfaces [_unitPos, _targetPosASL, _unit, objNull, true, 1, "GEOM", "NONE"];
+	(count _intersects == 0)
+};
+
+// ============= FIND CLEAR PATH AROUND OBSTACLE =============
+private _fnc_findClearPath = {
+	params ["_unit", "_blockedPos", "_target"];
+	private _clearPos = [0,0,0];
+	private _unitDir = _unit getDir _blockedPos;
+	private _angles = [45, -45, 90, -90, 30, -30, 60, -60];
+	{
+		private _testAngle = _unitDir + _x;
+		private _testPos = _unit getPos [8 + random 5, _testAngle];
+		if ([_unit, _testPos] call _fnc_isPathClear) exitWith {
+			_clearPos = _testPos;
+		};
+	} forEach _angles;
+	if (_clearPos isEqualTo [0,0,0]) then {
+		{
+			private _testAngle = _unitDir + _x;
+			private _testPos = _unit getPos [4, _testAngle];
+			if ([_unit, _testPos] call _fnc_isPathClear) exitWith {
+				_clearPos = _testPos;
+			};
+		} forEach [90, -90, 135, -135, 180];
+	};
+	_clearPos
+};
+
 if (!isNull _firer && {([_unit, "FIRE", _firer] checkVisibility [aimpos _unit, aimpos _firer]) > 0}) then {_target = _firer};
 
 if (!(unitPos _unit == "AUTO")) then {_cancrouch = false;};
 sleep (random 0.5);
 
 while {alive _unit} do {
+	
 	if (getSuppression _unit > 0.9 && {_target distance _unit > 30}) then {_cooldown=_unit getvariable ["RNG_cooldown",(time -1)]; if (time > _cooldown) then {_suppressed=true;_exit=true};};
 	if (!alive _unit OR _exit OR !(vehicle _unit == _unit) OR (lifestate _unit =="INCAPACITATED") OR isplayer _unit OR (isplayer (_unit getvariable ["bis_fnc_moduleremotecontrol_owner",objNull]))) exitwith {
 		[_unit,_suppressed,_cancrouch] spawn {
@@ -165,6 +205,16 @@ while {alive _unit} do {
 			_pos=(_line select 0) select 0; 
 		};
 		
+		// ===== PATH CLEARANCE CHECK - Avoid walls/buildings =====
+		if (!isNil "_pos" && {!(_pos isEqualTo [0,0,0])}) then {
+			if (!([_unit, _pos] call _fnc_isPathClear)) then {
+				private _clearPath = [_unit, _pos, _target] call _fnc_findClearPath;
+				if !(_clearPath isEqualTo [0,0,0]) then {
+					_pos = _clearPath;
+				};
+			};
+		};
+		
 		////Leaning
 		if ((time - _starttime) % 1 > 0.8) then {
 		_center=getposasl _unit; 
@@ -231,7 +281,21 @@ while {alive _unit} do {
 				_unit setVelocity [0, 0, 0];
 			};
 			if ((time - _starttime) % 1 > 0.5) then {
-				if (("tacs" in animationstate _unit OR "run" in animationstate _unit OR "evas" in animationstate _unit) && {((vectorMagnitude (velocityModelSpace _unit)) < 1.5)}) then {_unit playactionnow "stop";_unit setVelocity [0, 0, 0];_type=_types selectRandomWeighted _weight;};
+				if (("tacs" in animationstate _unit OR "run" in animationstate _unit OR "evas" in animationstate _unit) && {((vectorMagnitude (velocityModelSpace _unit)) < 1.5)}) then {
+					_unit playactionnow "stop";
+					_unit setVelocity [0, 0, 0];
+
+					// Find clear path if stuck
+					if (!isnil "_pos" && {!(_pos isEqualTo [0,0,0])}) then {
+						if (!([_unit, _pos] call _fnc_isPathClear)) then {
+							private _clearPath = [_unit, _pos, _target] call _fnc_findClearPath;
+							if !(_clearPath isEqualTo [0,0,0]) then {
+								_pos = _clearPath;
+							};
+						};
+					};
+					_type=_types selectRandomWeighted _weight;
+				};
 				if ((_unit ammo currentweapon _unit < 2) && {_cancrouch && {!("reload" in (gesturestate _unit))}}) then {
 					_stance=["MIDDLE","DOWN"] selectRandomWeighted [1,0.2];
 					if (!((unitpos _unit) == _stance)) then {

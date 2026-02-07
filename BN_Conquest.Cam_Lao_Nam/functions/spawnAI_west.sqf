@@ -108,7 +108,8 @@
 
                 _unit setCombatMode "RED";
                 _unit setBehaviour "COMBAT";
-
+                _unit speedMode "FULL";
+                
                 [_unit] spawn {
                     params ["_unit"];
                     if (isNull _unit) exitWith {};
@@ -153,9 +154,10 @@
                                 };
 
                                 private _wp = _grp addWaypoint [position _targetSector, 0];
-                                _wp setWaypointType "SAD";
+                                _wp setWaypointType "move";
                                 _wp setWaypointBehaviour "COMBAT";
                                 _wp setWaypointCombatMode "RED";
+                                _wp setWaypointSpeed "FULL";
                             };
                         };
 
