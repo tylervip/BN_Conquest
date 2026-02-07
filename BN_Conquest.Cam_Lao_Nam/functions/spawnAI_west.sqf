@@ -99,6 +99,8 @@
                 private _randomType = selectRandom _aiTypes;
                 private _unit = _group createUnit [_randomType, _spawnPos, [], 0, "NONE"];
                 [_unit] execVM "EventHandler\fn_registerEH.sqf";
+                
+                [_unit] call RNG_fnc_unit_init;
 
                 _unit addEventHandler ["Killed", {
                     [_side, -1] call BIS_fnc_respawnTickets;

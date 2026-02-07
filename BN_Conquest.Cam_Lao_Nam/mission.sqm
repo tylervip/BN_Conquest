@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=1447;
+		nextID=1481;
 	};
 	class Camera
 	{
-		pos[]={14763.021,353.42874,17936.086};
-		dir[]={-0.71752357,-0.52468342,0.45822188};
-		up[]={-0.44226804,0.85124791,0.28243646};
-		aside[]={0.53825098,-1.2628152e-07,0.84284037};
+		pos[]={15169.027,36.84137,18272.287};
+		dir[]={0.79393864,-0.5905382,0.14471839};
+		up[]={0.58096874,0.8070069,0.10589866};
+		aside[]={0.17932545,-1.715307e-08,-0.9837985};
 	};
 };
 binarizationWanted=0;
@@ -337,6 +337,19 @@ class CustomAttributes
 		name="Scenario";
 		class Attribute0
 		{
+			property="cba_settings_hasSettingsFile";
+			expression="false";
+			class Value
+			{
+				class data
+				{
+					singleType="BOOL";
+					value=1;
+				};
+			};
+		};
+		class Attribute1
+		{
 			property="EnableDebugConsole";
 			expression="true";
 			class Value
@@ -348,7 +361,7 @@ class CustomAttributes
 				};
 			};
 		};
-		nAttributes=1;
+		nAttributes=2;
 	};
 };
 class Mission
@@ -10844,13 +10857,13 @@ class Mission
 			dataType="Logic";
 			class PositionInfo
 			{
-				position[]={15300,-0.22699165,18298};
-				angles[]={6.245204,0,6.2711854};
+				position[]={15300,-0.22698212,18298};
+				angles[]={6.2452068,0,6.2711778};
 			};
 			init="    [] spawn {" \n "        while {isNil ""stopCuratorLoop""} do {" \n "        { _x addCuratorEditableObjects [vehicles + allUnits]} forEach allCurators;" \n "        uisleep 10;" \n "        };" \n "    };";
 			id=388;
 			type="ModuleCurator_F";
-			atlOffset=28.36899;
+			atlOffset=28.368999;
 			class CustomAttributes
 			{
 				class Attribute0
@@ -10901,7 +10914,7 @@ class Mission
 						class data
 						{
 							singleType="SCALAR";
-							value=2;
+							value=3;
 						};
 					};
 				};

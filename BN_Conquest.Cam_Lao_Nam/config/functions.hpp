@@ -77,4 +77,16 @@ class CfgFunctions {
 			class canSpawnAt {};
 		};
 	};
+	
+	// RNG AI System
+	class RNG {
+		class core {
+			file = "functions\RNGAI";
+			class unit_init {};
+			class combat {};
+			class react {};
+			class cover {};
+			class turning {};
+		};
+	};
 };
