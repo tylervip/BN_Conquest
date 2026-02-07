@@ -14,7 +14,7 @@ cutText [
     </t>",
     "PLAIN DOWN", -1, true, true
 ];
-openMap [true, true];
+openMap [true, false];
 
 onMapSingleClick {
     params ["_ctrl", "_pos"];
@@ -33,27 +33,76 @@ onMapSingleClick {
     // ----------------------
     // Group member
     // ----------------------
+    private _underFireMember = objNull;
+    private _enemyNearbyMember = objNull;
+    private _spawnOnVehicle = objNull;
+    private _vehicleFull = false;
     {
         if (
             alive _x &&
             _x != player &&
-            !(_x getVariable ["underFire", false]) &&
-            !(_x getVariable ["inDebugRespawn", false]) &&
-            (_clickpos distance2D _x < _clickRadius) &&
-            ({ side _x2 != _side && _x2 distance2D _x < _safeRadius } count allUnits == 0)
-        ) exitWith {
-            _finalPos = getPosATL _x;
+            (_clickpos distance2D _x < _clickRadius)
+        ) then {
+            // Check if under fire
+            if ((_x getVariable ["underFire", false]) || (_x getVariable ["inDebugRespawn", false])) then {
+                _underFireMember = _x;
+            } else {
+                // Check if enemies nearby
+                if ({ side _x2 != _side && _x2 distance2D _x < _safeRadius } count allUnits > 0) then {
+                    _enemyNearbyMember = _x;
+                } else {
+                    _finalPos = getPosATL _x;
+                    // Check if teammate is in a vehicle with room
+                    private _veh = vehicle _x;
+                    if (_veh != _x) then {
+                        // Teammate is in a vehicle - check for empty seats
+                        private _emptySeats = _veh emptyPositions "cargo";
+                        if (_emptySeats > 0) then {
+                            _spawnOnVehicle = _veh;
+                        } else {
+                            _vehicleFull = true;
+                            _finalPos = [0,0,0]; // Block spawn - vehicle is full
+                        };
+                    };
+                };
+            };
         };
     } forEach units group player;
 
+    // Show message if clicked on group member under fire
+    if (!isNull _underFireMember && _finalPos isEqualTo [0,0,0]) exitWith {
+        [
+            format ["<t color='#FF6600' size='1.2' align='center'>%1 is under fire!<br/>Cannot spawn on this teammate.</t>", name _underFireMember],
+            0, 0.8, 3, 0, 0, 7017
+        ] spawn BIS_fnc_dynamicText;
+        execVM "custom_respawn\init_respawn.sqf";
+    };
+
+    // Show message if enemies nearby
+    if (!isNull _enemyNearbyMember && _finalPos isEqualTo [0,0,0]) exitWith {
+        [
+            format ["<t color='#FFAA00' size='1.2' align='center'>Enemies nearby %1!<br/>Cannot spawn on this teammate.</t>", name _enemyNearbyMember],
+            0, 0.8, 3, 0, 0, 7017
+        ] spawn BIS_fnc_dynamicText;
+        execVM "custom_respawn\init_respawn.sqf";
+    };
+
+    // Show message if vehicle is full
+    if (_vehicleFull && _finalPos isEqualTo [0,0,0]) exitWith {
+        [
+            "<t color='#FFAA00' size='1.2' align='center'>Vehicle is full!<br/>Cannot spawn on this teammate.</t>",
+            0, 0.8, 3, 0, 0, 7017
+        ] spawn BIS_fnc_dynamicText;
+        execVM "custom_respawn\init_respawn.sqf";
+    };
+
     // ----------------------
-    // Sector
+    // Sector - automatically detect all sectors
     // ----------------------
     if (_finalPos isEqualTo [0,0,0]) then {
+        private _allSectors = allMissionObjects "ModuleSector_F";
         {
-            private _sector = missionNamespace getVariable [format ["sector_%1", _x], objNull];
-            if (isNull _sector) exitWith {};
-
+            private _sector = _x;
             private _sectorCenter = getPos _sector;
             private _owner = _sector getVariable ["owner", sideUnknown];
 
@@ -78,7 +127,7 @@ onMapSingleClick {
                     };
                 };
             };
-        } forEach ["Alpha","Bravo","Charlie","Delta","Echo","Foxtrot","Golf"];
+        } forEach _allSectors;
     };
 
     // ----------------------
@@ -124,8 +173,17 @@ onMapSingleClick {
     // ----------------------
     if !(_finalPos isEqualTo [0,0,0]) then {
         player setPosATL _finalPos;
+        // Mobile respawn vehicle takes priority
         if (!isNull _spawnVehicle) then {
             player moveInCargo _spawnVehicle;
+        } else {
+            // Check if spawning on teammate in vehicle
+            if (!isNull _spawnOnVehicle && {alive _spawnOnVehicle}) then {
+                private _emptySeats = _spawnOnVehicle emptyPositions "cargo";
+                if (_emptySeats > 0) then {
+                    player moveInCargo _spawnOnVehicle;
+                };
+            };
         };
         player setVariable ["inDebugRespawn", false, true];
         cutText ["", "PLAIN", -1, true, true];

@@ -25,7 +25,8 @@
     private _spawnRadiusMin = 25;
     private _spawnRadiusMax = 100;
     private _safeRadius = 50;
-    private _sectorNames = ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf"];
+    // Automatically detect all sector modules in the mission
+    private _allSectors = allMissionObjects "ModuleSector_F";
     private _fallbackPos = getMarkerPos "east_AI_spawn";
 
     while {true} do {
@@ -37,17 +38,15 @@
             continue;
         };
 
-        // Collect owned sectors
+        // Collect owned sectors - automatically detect all sectors
         private _ownedSectors = [];
         {
-            private _sectorObj = missionNamespace getVariable [format ["sector_%1", _x], objNull];
-            if (!isNull _sectorObj) then {
-                private _owner = _sectorObj getVariable ["owner", sideUnknown];
-                if (_owner == _side) then {
-                    _ownedSectors pushBack _sectorObj;
-                };
+            private _sectorObj = _x;
+            private _owner = _sectorObj getVariable ["owner", sideUnknown];
+            if (_owner == _side) then {
+                _ownedSectors pushBack _sectorObj;
             };
-        } forEach _sectorNames;
+        } forEach _allSectors;
 
         private _spawnPos = _fallbackPos;
         private _validSpawn = false;
