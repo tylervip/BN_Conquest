@@ -22,6 +22,28 @@ MRS_vehicles = [
     [mobile_respawn_1, "marker_mobile_red", east]
 ];
 
+// Add loadout restoration action to each vehicle
+{
+    _x params ["_vehicle"];
+    _vehicle addAction [
+        "<t color='#00ff00'>Restore Loadout</t>",
+        {
+            if (player getVariable ["loadoutCooldown", 0] > time) exitWith {
+                private _remaining = (player getVariable ["loadoutCooldown", 0]) - time;
+                hint format ["Loadout restore on cooldown! %1 seconds remaining", ceil _remaining];
+            };
+            player setVariable ["loadoutCooldown", time + 60];
+            player setUnitLoadout (player getVariable ["SavedLoadout", []]);
+            hint "Loadout restored!";
+        },
+        nil,
+        1.5,
+        false,
+        true,
+        "(_this distance _target) < 3"
+    ];
+} forEach MRS_vehicles;
+
 // Define teleport sign configurations
 // Format: [signObject, vehicleObject]
 MRS_teleportPairs = [];
