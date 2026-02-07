@@ -108,7 +108,6 @@
 
                 _unit setCombatMode "RED";
                 _unit setBehaviour "COMBAT";
-                _unit speedMode "FULL";
 
                 [_unit] spawn {
                     params ["_unit"];

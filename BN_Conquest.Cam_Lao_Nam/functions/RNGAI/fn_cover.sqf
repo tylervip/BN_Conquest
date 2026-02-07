@@ -242,6 +242,16 @@ while {alive _unit} do {
 			if (_cancrouch) then {_unit setunitpos "Auto"};
 			_unit setvariable ["RNG_incombat", false];
 			_unit setvariable ["RNG_cover", false];
+			// === VCOM/RNG HANDOFF: Resume VCOM if no other unit in group is in RNG combat ===
+			private _grp = group _unit;
+			if (_grp getVariable ["RNG_vcom_paused", false]) then {
+				private _anyInCombat = false;
+				{ if (_x getVariable ["RNG_incombat", false] || {_x getVariable ["RNG_cover", false]}) then { _anyInCombat = true; }; } forEach (units _grp);
+				if (!_anyInCombat) then {
+					_grp setVariable ["Vcm_Disable", false];
+					_grp setVariable ["RNG_vcom_paused", false];
+				};
+			};
 			// Shorter cooldown for aggressive re-engagement
 			_unit setvariable ["RNG_cooldown", (time + 3)];
 			if (!isNull _target && {vehicle _target iskindof "Tank"}) then {

@@ -11,17 +11,24 @@ if (((missionnamespace getvariable ["RNG_sides","ALL"]) == "ALL") OR RNG_sides =
 	
 _man setvariable ["RNG_active",true];
 
+// Apply VCOM AI skills to RNG units if VCOM skill changing is enabled
+if (VCM_SKILLCHANGE && {!(_group getVariable ["VCM_Skilldisable", false])}) then {
+    _group call VCM_AIDIFSET;
+};
+
+// AI Grenade Throwback - give AI a chance to throw back grenades
+[_man] call RNG_fnc_aiGrenadeThrowback;
+
 _man addEventHandler ["FiredNear", {
 	params ["_unit", "_firer", "_distance", "_weapon", "_muzzle", "_mode", "_ammo", "_gunner"];
 	[_unit,_firer] call RNG_fnc_react;
 }];
-if (!(isClass(configFile >> "CfgPatches" >> "ace_medical_engine"))) then {
+// ACE removed - always add HandleDamage EH
 _man addEventHandler ["HandleDamage", { 
 	params ["_unit", "_selection", "_damage", "_source", "_projectile", "_hitIndex", "_instigator", "_hitPoint"]; 
 	if ((isNull _instigator && _source == _unit) OR (!(isplayer _source) && !(side _source == sideEnemy) && (side _unit == side _source))) then {_damage = 0};
 	_damage;
 }];
-};
 
 _man addEventHandler ["Suppressed", {
 	params ["_unit", "_distance", "_shooter", "_instigator", "_ammoObject", "_ammoClassName", "_ammoConfig"];

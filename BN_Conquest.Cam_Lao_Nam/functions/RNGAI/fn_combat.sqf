@@ -108,6 +108,16 @@ while {alive _unit} do {
 				_unit enableai "AIMINGERROR";
 				if (_cancrouch) then {_unit setunitpos "AUTO"};
 				_unit setvariable ["RNG_incombat",false];
+				// === VCOM/RNG HANDOFF: Resume VCOM if no other unit in group is in RNG combat ===
+				private _grp = group _unit;
+				if (_grp getVariable ["RNG_vcom_paused", false]) then {
+					private _anyInCombat = false;
+					{ if (_x getVariable ["RNG_incombat", false] || {_x getVariable ["RNG_cover", false]}) then { _anyInCombat = true; }; } forEach (units _grp);
+					if (!_anyInCombat) then {
+						_grp setVariable ["Vcm_Disable", false];
+						_grp setVariable ["RNG_vcom_paused", false];
+					};
+				};
 				sleep 0.1;
 			};
 		};
@@ -215,23 +225,19 @@ while {alive _unit} do {
 			};
 		};
 		
-		////Leaning
-		if ((time - _starttime) % 1 > 0.8) then {
-		_center=getposasl _unit; 
-		_centerPos=[_center select 0, _center select 1,(_center select 2) + 0.8];
-		_leanLeft=(_unit getRelPos [0.6, 270]); 
-		_leanLeftPos=AGLToASL [_leanLeft select 0, _leanLeft select 1,(_leanLeft select 2) + 0.8];
-		_leanRight=(_unit getRelPos [0.6,90]); 
-		_leanRightPos=AGLToASL [_leanRight select 0, _leanRight select 1,(_leanRight select 2) + 0.8];
-		switch (true) do {
-			case (!(pose _unit == "Lying") && {(count (lineIntersectsSurfaces [_leanLeftPos, aimpos _target, _unit, _target, true, -1])== 0) && {!(count (lineIntersectsSurfaces [_centerPos, aimpos _target, _unit, _target, true, 1,"FIRE"])== 0) && {!(needreload _unit == 1)}}}) : {_unit playactionnow "stop";_unit setVelocity [0, 0, 0];sleep 0.1;_unit playactionnow "AdjustL";sleep 1;_unit playactionnow "AdjustR";};
-			case (!(pose _unit == "Lying") && {(count (lineIntersectsSurfaces [_leanRightPos, aimpos _target, _unit, _target, true, -1])== 0) && {!(count (lineIntersectsSurfaces [_centerPos, aimpos _target, _unit, _target, true,  1,"FIRE"])== 0) && {!(needreload _unit == 1)}}}) : {_unit playactionnow "stop";_unit setVelocity [0, 0, 0];sleep 0.1;_unit playactionnow "AdjustR";sleep 1;_unit playactionnow "AdjustL";};
-			default {};
+		////Leaning - Simplified to prevent snapping
+		if ((time - _starttime) % 3 > 2.5 && {!isNull _target}) then {
+			// Simple leaning without position resets
+			if (([_unit, "VIEW",_target] checkVisibility [eyepos _unit, aimpos _target]) < 0.5) then {
+				// If visibility is blocked, try a quick lean
+				if (random 1 < 0.7) then { // 30% chance to lean
+					_leanDir = selectRandom ["AdjustL", "AdjustR"];
+					_unit playactionnow _leanDir;
+					sleep 0.5;
+					_unit playactionnow "AdjustF"; // Return to normal
+				};
+			};
 		};
-		};
-		////Fail safe return
-		if ("aadj" in animationstate _unit && {"left" in animationstate _unit}) then {_unit playactionnow "stop";_unit setVelocity [0, 0, 0];sleep 0.2;_unit playactionnow "AdjustR";sleep 0.5};
-		if ("aadj" in animationstate _unit && {"right" in animationstate _unit}) then {_unit playactionnow "stop";_unit setVelocity [0, 0, 0];sleep 0.2;_unit playactionnow "AdjustL";sleep 0.5};
 		
 		_reldir=_unit getreldir getpos _target;
 		if ((([_unit, "VIEW",_target] checkVisibility [eyepos _unit, aimpos _target]) > 0 OR ([_unit, "VIEW",_target] checkVisibility [aimpos _unit, eyepos _target]) > 0) && {!isnull _target}) then {
@@ -265,7 +271,7 @@ while {alive _unit} do {
 			
 			///debug pos - ar1 setPosASL [_pos select 0,_pos select 1,(_pos select 2) + 2.5];
 			switch (true) do {
-				case ((_unit distance2D _pos)< (1.5 + (vectorMagnitude (velocityModelSpace _unit))*0.25)): {if ((vectorMagnitude (velocityModelSpace _unit)) > 0.2) then {_unit playactionnow "stop";};_unit setVelocity [0, 0, 0];};
+				case ((_unit distance2D _pos)< (1.5 + (vectorMagnitude (velocityModelSpace _unit))*0.25)): {_unit playactionnow "stop";};
 				case ((_unit getreldir _pos) < 67.5 && {(_unit getreldir _pos) > 22.5}): {_unit playactionnow (_anims select 0)};
 				case ((_unit getreldir _pos) < 342.5 && {(_unit getreldir _pos) > 297.5}): {_unit playactionnow (_anims select 1);};
 				case ((_unit getreldir _pos) < 22.5 OR (_unit getreldir _pos) > 342.5): {_unit playactionnow (_anims select 2);};
@@ -278,12 +284,10 @@ while {alive _unit} do {
 			};
 			} else {
 				_unit playactionnow "stop";
-				_unit setVelocity [0, 0, 0];
 			};
 			if ((time - _starttime) % 1 > 0.5) then {
 				if (("tacs" in animationstate _unit OR "run" in animationstate _unit OR "evas" in animationstate _unit) && {((vectorMagnitude (velocityModelSpace _unit)) < 1.5)}) then {
 					_unit playactionnow "stop";
-					_unit setVelocity [0, 0, 0];
 
 					// Find clear path if stuck
 					if (!isnil "_pos" && {!(_pos isEqualTo [0,0,0])}) then {
@@ -309,9 +313,9 @@ while {alive _unit} do {
 					
 				};
 			private _randomstop=random 15;
-			if (_randomstop > (15 - _skill)) then {_unit playactionnow "stop";_unit setVelocity [0, 0, 0];sleep (_skill/10)};
+			if (_randomstop > (15 - _skill)) then {_unit playactionnow "stop";sleep (_skill/10)};
 			};
-			if ((animationstate _unit == "amovpercmstpsraswrfldnon" OR animationstate _unit == "amovpknlmstpsraswrfldnon") && {((vectorMagnitude (velocityModelSpace _unit)) < 1)}) then {_unit setVelocity [0, 0, 0];};
+			if ((animationstate _unit == "amovpercmstpsraswrfldnon" OR animationstate _unit == "amovpknlmstpsraswrfldnon") && {((vectorMagnitude (velocityModelSpace _unit)) < 1)}) then {_unit playactionnow "stop";};
 	_unit setvariable ["RNG_target", _target];
 	} else {_exit=true};
 	sleep 0.05;

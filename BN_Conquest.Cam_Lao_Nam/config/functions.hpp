@@ -87,6 +87,23 @@ class CfgFunctions {
 			class react {};
 			class cover {};
 			class turning {};
+			class clearBuilding {};
+			class aiCoordinator {};
+			class aiGrenadeThrowback {};
 		};
 	};
+	
+	// BNC Core Functions
+	class BNC {
+		class curator {
+			file = "functions";
+			class curator_init {};
+		};
+	};
+
+	
+	// VCOM AI System
+	#include "..\functions\vcomai\Vcom\cfgFunctions.hpp"
+	
+
 };
