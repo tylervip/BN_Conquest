@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=1481;
+		nextID=1498;
 	};
 	class Camera
 	{
-		pos[]={15169.027,36.84137,18272.287};
-		dir[]={0.79393864,-0.5905382,0.14471839};
-		up[]={0.58096874,0.8070069,0.10589866};
-		aside[]={0.17932545,-1.715307e-08,-0.9837985};
+		pos[]={15115.436,79.843933,18264.631};
+		dir[]={0.65559936,-0.75048643,0.083605744};
+		up[]={0.74446499,0.66087747,0.094938233};
+		aside[]={0.12650253,9.9418685e-08,-0.9919824};
 	};
 };
 binarizationWanted=0;
@@ -337,19 +337,6 @@ class CustomAttributes
 		name="Scenario";
 		class Attribute0
 		{
-			property="cba_settings_hasSettingsFile";
-			expression="false";
-			class Value
-			{
-				class data
-				{
-					singleType="BOOL";
-					value=1;
-				};
-			};
-		};
-		class Attribute1
-		{
 			property="EnableDebugConsole";
 			expression="true";
 			class Value
@@ -361,14 +348,14 @@ class CustomAttributes
 				};
 			};
 		};
-		nAttributes=2;
+		nAttributes=1;
 	};
 };
 class Mission
 {
 	class Intel
 	{
-		briefingName="BN_Conquest";
+		briefingName="BN_Conquest_LingHoBase";
 		timeOfChanges=1800.0002;
 		startWeather=0.2;
 		startWind=0.1;
