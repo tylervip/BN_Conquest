@@ -37157,7 +37157,7 @@ class Mission
 			side="Empty";
 			class Attributes
 			{
-				name="Heil_SpawnPoint";
+				name="Heil_SpawnPoint_0";
 				disableSimulation=1;
 			};
 			id=1540;

@@ -8,6 +8,12 @@
     Map stays open until a valid click is chosen.
 */
 
+// Ensure player has a map before opening the respawn interface
+if !("ItemMap" in (items player + assignedItems player)) then {
+    player addItem "ItemMap";
+    player assignItem "ItemMap";
+};
+
 cutText [
     "<t color='#FF6000' size='1.2' font='PuristaBold' align='center'>
     Select a captured sector, your base, mobile respawn, or a group member to redeploy.
