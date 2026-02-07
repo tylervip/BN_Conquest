@@ -21,7 +21,18 @@ private _activePlayerMarkers = [];
 private _activeAIMarkers = [];
 
 private _playerMarker = format ["player_marker_%1", getPlayerUID player];
-private _playerMarkerType = "loc_ViewTower";
+
+// Determine marker type based on vehicle
+private _playerMarkerType = if (vehicle player != player) then {
+    private _veh = vehicle player;
+    if (_veh isKindOf "Car") exitWith { "loc_car" };
+    if (_veh isKindOf "Air") exitWith { "loc_heli" };
+    if (_veh isKindOf "Ship") exitWith { "loc_boat" };
+    "loc_ViewTower"
+} else {
+    "loc_ViewTower"
+};
+
 _playerMarker setMarkerTypeLocal _playerMarkerType;
 
 //Player Markers:
@@ -34,7 +45,16 @@ _playerMarker setMarkerTypeLocal _playerMarkerType;
 	//guaranteed unique name for marker
 	private _unitMarker = format ["player_marker_%1", getPlayerUID _otherUnit];
 
-	private _markerType = "loc_ViewTower";
+	// Determine marker type based on vehicle
+	private _markerType = if (vehicle _otherUnit != _otherUnit) then {
+		private _veh = vehicle _otherUnit;
+		if (_veh isKindOf "Car") exitWith { "loc_car" };
+		if (_veh isKindOf "Air") exitWith { "loc_heli" };
+		if (_veh isKindOf "Ship") exitWith { "loc_boat" };
+		"loc_ViewTower"
+	} else {
+		"loc_ViewTower"
+	};
 
 	//easy Way to check if Marker exists
 	if (markerShape _unitMarker == "") then {
@@ -64,7 +84,17 @@ markers_ai_units = allUnits select {!(isPlayer _x)}; //exclude Players
 	if !(_unitSameSide) then { continue }; //if yes then#
 
 	private _ai_Marker = format ["ai_marker_%1", str _x];
-	private _markerType = "loc_ViewTower";
+
+	// Determine marker type based on vehicle
+	private _markerType = if (vehicle _ai_unit != _ai_unit) then {
+		private _veh = vehicle _ai_unit;
+		if (_veh isKindOf "Car") exitWith { "loc_car" };
+		if (_veh isKindOf "Air") exitWith { "loc_heli" };
+		if (_veh isKindOf "Ship") exitWith { "loc_boat" };
+		"loc_ViewTower"
+	} else {
+		"loc_ViewTower"
+	};
 
 	if (markerShape _ai_Marker == "") then {
 		createMarkerLocal [_ai_Marker, [0,0,0]];
