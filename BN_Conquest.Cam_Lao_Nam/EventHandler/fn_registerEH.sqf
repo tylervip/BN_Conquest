@@ -7,29 +7,24 @@ _unit addEventHandler ["Suppressed", {
     [_unit] execVM "EventHandler\fn_trackSuppression.sqf";
 }];
 
-
 _unit addEventHandler ["Killed", {
     params ["_unit", "_killer"];
     [_unit, _killer] execVM "EventHandler\fn_trackKills.sqf";
+    
+    // Clean up dead units after 30 seconds
+    [_unit] spawn {
+        sleep 30;
+        deleteVehicle (_this select 0);
+    };
 }];
 
-// Clean up dead players
+// Clean up dead players on respawn
 if (isPlayer _unit) then {
     _unit addEventHandler ["Respawn", {
         params ["_newUnit", "_oldUnit"];
         [_oldUnit] spawn {
             sleep 30;
-            deleteVehicle _this;
-        };
-    }];
-};
-// Clean up dead AI
-if (!isPlayer _unit) then {
-    _unit addEventHandler ["Killed", {
-        params ["_unit"];
-        [_unit] spawn {
-            sleep 30;
-            deleteVehicle _this;
+            deleteVehicle (_this select 0);
         };
     }];
 };

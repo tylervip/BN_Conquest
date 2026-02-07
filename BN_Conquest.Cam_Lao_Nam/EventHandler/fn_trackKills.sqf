@@ -16,13 +16,13 @@ if (side group _killer == side group _unit) exitWith {};
 private _killerName = if (isPlayer _killer) then {
     name _killer
 } else {
-    format [" (AI)", name _killer]
+    format ["(AI)", name _killer]
 };
 
 private _victimName = if (isPlayer _unit) then {
     name _unit
 } else {
-    format [" (AI)", name _unit]
+    format ["(AI)", name _unit]
 };
 
 // Determine color (Red = East, Blue = West, Gray = Other)
