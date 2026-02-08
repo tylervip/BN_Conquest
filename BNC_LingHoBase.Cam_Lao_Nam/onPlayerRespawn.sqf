@@ -17,3 +17,6 @@ player setVariable ["inDebugRespawn", true, true];
 [] execVM "functions\magRepack\init_magRepack.sqf";
 
 execVM "custom_respawn\init_respawn.sqf";
+
+// Re-assign curator to new body after respawn
+[player] call BNC_fnc_curator_init;

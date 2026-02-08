@@ -1,36 +1,44 @@
+/*
+	fn_curator_init.sqf
+	Called from initPlayerLocal.sqf — automatically remoteExecs to server.
+	Usage: [player] call BNC_fnc_curator_init;
+*/
+
 params ["_player"];
+
+// Must run on the server — curator commands are server-only
+if (!isServer) exitWith {
+	[_player] remoteExecCall ["BNC_fnc_curator_init", 2];
+};
 
 BIS_fnc_endMission = {};
 
 // Define curator UIDs - add your Steam UIDs here
-curatorUIDs = [
-    "76561198074552443", // Tylervip
+private _curatorUIDs = [
+	"76561198074552443", // Tylervip
 	"76561198976258425", // Legend
 	"76561199175533497", // Cypher
 	"76561198067721911"  // Bogsy
 ];
 
-private _curators = missionNamespace getVariable ["curatorUIDs", []];
-private _playerUID = getPlayerUID _player;
-private _playerIsCurator = _curators findIf { _x == _playerUID } > -1;
-
-if (!_playerIsCurator) exitWith {
-	diag_log format ["[CURATOR] Player %1 (%2) not in curator list. UIDs: %3", name _player, _playerUID, _curators];
+if (isNull _player) exitWith {
+	diag_log "[CURATOR] ERROR: Player object is null on server";
 };
 
-// Removed mod check - now vanilla compatible
+private _playerUID = getPlayerUID _player;
+if (_playerUID == "") exitWith {
+	diag_log format ["[CURATOR] ERROR: Could not get UID for %1", _player];
+};
 
-[_player] call {
-	params ["_thePlayer"];
+private _playerIsCurator = (_curatorUIDs findIf { _x == _playerUID }) > -1;
 
-	if (isNull _thePlayer) exitWith {
-		diag_log "[CURATOR] ERROR: Player object is null on server";
-	};
+if (!_playerIsCurator) exitWith {
+	diag_log format ["[CURATOR] Player %1 (%2) not in curator list.", name _player, _playerUID];
+};
 
-	private _playerUID = getPlayerUID _thePlayer;
-	if (_playerUID == "") exitWith {
-		diag_log format ["[CURATOR] ERROR: Could not get UID for %1", _thePlayer];
-	};
+// Spawn scheduled environment — needed for sleep/waitUntil
+[_player, _playerUID] spawn {
+	params ["_thePlayer", "_playerUID"];
 
 	private _curVarName = _playerUID + "_Cur";
 	private _myCurObject = missionNamespace getVariable [_curVarName, objNull];
@@ -86,6 +94,7 @@ if (!_playerIsCurator) exitWith {
 		_myCurObject setVariable ["owner", _playerUID];
 		diag_log format ["[CURATOR] SUCCESS: %1 (%2) assigned to %3", name _thePlayer, _playerUID, _myCurObject];
 	} else {
-		diag_log format ["[CURATOR] ERROR: Failed to assign %1 (%2) to %3. Current assigned unit: %4", name _thePlayer, _playerUID, _myCurObject, getAssignedCuratorUnit _myCurObject];
+		diag_log format ["[CURATOR] ERROR: Failed to assign %1 (%2) to %3. Current assigned unit: %4",
+			name _thePlayer, _playerUID, _myCurObject, getAssignedCuratorUnit _myCurObject];
 	};
 };
