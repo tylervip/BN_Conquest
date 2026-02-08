@@ -21,7 +21,8 @@ private _curatorUIDs = [
 	"76561198074552443", // Tylervip
 	"76561198976258425", // Legend
 	"76561199175533497", // Cypher
-	"76561198067721911"  // Bogsy
+	"76561198067721911", // Bogsy
+	"76561198255372147"  // Rear
 ];
 
 if (isNull _player) exitWith {
