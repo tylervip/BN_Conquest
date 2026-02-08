@@ -20,7 +20,7 @@ cutText [
     </t>",
     "PLAIN DOWN", -1, true, true
 ];
-openMap [true, false];
+openMap [true, true];
 
 onMapSingleClick {
     params ["_ctrl", "_pos"];
