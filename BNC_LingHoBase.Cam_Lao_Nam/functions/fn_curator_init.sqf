@@ -1,7 +1,10 @@
 /*
 	fn_curator_init.sqf
+	ather: Tylervip
 	Called from initPlayerLocal.sqf — automatically remoteExecs to server.
+	and onPlayerRespawn.sqf to re-assign curator after respawn.
 	Usage: [player] call BNC_fnc_curator_init;
+	usage: [player] execVM "scripts\fn_curator_init.sqf";
 */
 
 params ["_player"];

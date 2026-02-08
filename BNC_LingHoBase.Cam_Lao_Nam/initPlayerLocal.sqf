@@ -27,5 +27,6 @@ player enableFatigue false;
 [] execVM "functions\earplugs.sqf";
 []execVM "functions\magRepack\init_magRepack.sqf";
 [player] execVM "EventHandler\fn_registerEH.sqf";
+
 // Initialize curator for player
 [player] call BNC_fnc_curator_init;
