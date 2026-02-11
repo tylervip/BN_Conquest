@@ -14,9 +14,8 @@ _unit setvariable ["RNG_incombat", true];
 
 private _exit = false;
 private _suppressed = false;
-private _types = ["AGR","DFS","RND","FRM","CVR","FLW"];
-if (isplayer (leader _unit)) then {_types = ["FLW","FLW","FLW","FLW","FLW","FLW"];};
-private _weight = [1,0.8,0.8,0.8,0,0.8];
+private _types = ["AGR","RND","CVR","DFS"];
+private _weight = [1.5,0.8,1.0,0.8];
 private _type = _types selectRandomWeighted _weight;
 private _suppression = 0;
 private _pos = [0,0,0];
@@ -40,6 +39,28 @@ private _dodge = false;
 private _skill = ((1 - (_unit skillfinal "general")) * 5);
 private _lastObjectCheck = 0;
 private _objects = [];
+private _lastAimedAtCheck = 0;
+private _isBeingAimedAt = false;
+private _lastDodgeTime = 0;
+
+// ============= AIMED-AT DETECTION =============
+private _fnc_isBeingAimedAt = {
+	params ["_unit"];
+	private _aimedAt = false;
+	private _nearEnemies = _unit targets [true, 200];
+	{
+		if (alive _x && {side _x != side _unit}) then {
+			private _aimDir = _x getreldir getpos _unit;
+			if (_aimDir < 12 OR _aimDir > 348) then {
+				if (([_x, "FIRE", _unit] checkVisibility [eyepos _x, aimpos _unit]) > 0.2) then {
+					_aimedAt = true;
+				};
+			};
+		};
+		if (_aimedAt) exitWith {};
+	} forEach _nearEnemies;
+	_aimedAt
+};
 
 // ============= PATH CLEARANCE CHECK =============
 private _fnc_isPathClear = {
@@ -109,15 +130,7 @@ while {alive _unit} do {
 				if (_cancrouch) then {_unit setunitpos "AUTO"};
 				_unit setvariable ["RNG_incombat",false];
 				// === VCOM/RNG HANDOFF: Resume VCOM if no other unit in group is in RNG combat ===
-				private _grp = group _unit;
-				if (_grp getVariable ["RNG_vcom_paused", false]) then {
-					private _anyInCombat = false;
-					{ if (_x getVariable ["RNG_incombat", false] || {_x getVariable ["RNG_cover", false]}) then { _anyInCombat = true; }; } forEach (units _grp);
-					if (!_anyInCombat) then {
-						_grp setVariable ["Vcm_Disable", false];
-						_grp setVariable ["RNG_vcom_paused", false];
-					};
-				};
+
 				sleep 0.1;
 			};
 		};
@@ -134,8 +147,8 @@ while {alive _unit} do {
 		_type=_types selectRandomWeighted _weight;
 	};
 	if ((time - _starttime) % 30 > 29) then {
-		_sortedtargets=[];
-		_alltargets=_unit targets [true,300];
+		private _sortedtargets=[];
+		private _alltargets=_unit targets [true,300];
 		_sortedtargets = [_alltargets,[],{_unit distance _x},"ASCEND",{([_unit, "FIRE",_x] checkVisibility [aimpos _unit, aimpos _x]) > 0}] call BIS_fnc_sortBy;
 		sleep 0.1;
 		if (!isnil "_sortedtargets" && {count _sortedtargets==0}) then {
@@ -144,8 +157,8 @@ while {alive _unit} do {
 		
 	};
 	if ((time - _starttime) % 1 > 0.5) then {
-		_alltargets=_unit targets [true,300];
-		_targets = [_alltargets,[],{_unit distance _x},"ASCEND",{([_unit, "FIRE",_x] checkVisibility [aimpos _unit, aimpos _x]) > 0}] call BIS_fnc_sortBy;
+		private _alltargets=_unit targets [true,300];
+		private _targets = [_alltargets,[],{_unit distance _x},"ASCEND",{([_unit, "FIRE",_x] checkVisibility [aimpos _unit, aimpos _x]) > 0}] call BIS_fnc_sortBy;
 		sleep 0.02;
 		if (count _targets > 0) then {
 			_target=_targets select 0;
@@ -162,15 +175,22 @@ while {alive _unit} do {
 	
 	if ((time - _starttime) % 4 > 3.5) then {
 		if (_cancrouch) then {
-			_stance=selectrandom ["UP","MIDDLE"];
-			if (!isNull _target && {_target distance2D _unit > 150}) then {_stance=["UP","MIDDLE","DOWN"] selectRandomWeighted [1,1,0.2];};
+			// Check if any enemy is aiming at us
+			private _beingAimedAt = [_unit] call _fnc_isBeingAimedAt;
+			private _stance = if (_beingAimedAt) then {
+				// Being aimed at - crouch but never prone
+				"MIDDLE"
+			} else {
+				// Not aimed at - mostly stand, sometimes crouch
+				["UP","UP","MIDDLE"] selectRandomWeighted [1,1,0.4]
+			};
+			if (!_beingAimedAt && {!isNull _target} && {_target distance2D _unit > 150}) then {_stance=["UP","MIDDLE"] selectRandomWeighted [1,0.5];};
 			if (!((unitpos _unit) == _stance)) then {
 			_unit playactionnow _stance;
 			};
 			switch (true) do {
 				case (_stance=="MIDDLE") : {_unit setunitpos "MIDDLE";};
 				case (_stance=="UP") : {_unit setunitpos "UP";};
-				case (_stance=="DOWN") : {_unit setunitpos "DOWN";sleep ((random 5) + 3);};
 				default {};
 			};
 		};
@@ -189,22 +209,21 @@ while {alive _unit} do {
 			case (_type=="RND"): {if (count _objects > 2) then {_targetpos = _objects select 1;} else {_targetpos = _objects select 0;};};
 			case (_type=="DFS"): {
 				if (!isNull _target) then {
-					_sortedobjects= [_objects,[],{_unit distance _x},"ASCEND",{([_target, "FIRE",_x] checkVisibility [aimpos _target, getposasl _x]) < 1}] call BIS_fnc_sortBy;
+					private _sortedobjects= [_objects,[],{_unit distance _x},"ASCEND",{([_target, "FIRE",_x] checkVisibility [aimpos _target, getposasl _x]) < 1}] call BIS_fnc_sortBy;
 					if (count _sortedobjects > 0) then {
 						_targetpos=_sortedobjects select 0;
 					};
 					} else {_type=_types selectRandomWeighted _weight;};
 			};
 			case (_type=="CVR"): {	if (!isnull _target) then {
-				_sortedobjects= [_objects,[],{_unit distance _x},"ASCEND",{_target distance _x > _unit distance _x}] call BIS_fnc_sortBy;
+				private _sortedobjects= [_objects,[],{_unit distance _x},"ASCEND",{_target distance _x > _unit distance _x}] call BIS_fnc_sortBy;
 				if (count _sortedobjects > 0) then {
 					_targetpos=_sortedobjects select 0;
 				};
 				} else {
 					_targetpos=[_objects,getpos _target] call BIS_fnc_nearestPosition;
 				};};
-				case (_type=="FRM"): {_targetpos=[_objects,((expectedDestination _unit) select 0)] call BIS_fnc_nearestPosition;};
-				case (_type=="FLW"): {_unit dofollow leader _unit;_targetpos=[_objects,formationposition _unit] call BIS_fnc_nearestPosition;};
+
 		};
 		if (typename _targetpos == "OBJECT") then {
 		_line=lineIntersectsSurfaces [[(aimpos _unit) select 0,(aimpos _unit) select 1,((aimpos _unit) select 2) - 0.5], getposASL _targetpos, _unit, objNull, true, 1,"FIRE"];
@@ -248,23 +267,87 @@ while {alive _unit} do {
 			};
 		};
 		
-		///dodgin
+		///dodgin - check if any enemy is aiming at this unit
 		
 		_dodge=false;
-		if ((time - _starttime) % 3 > 2.5 && {!isNull _target}) then {
-			_targetdir=_target getreldir getpos _unit;
-			if (((_targetdir) < 2.55555555555 OR (_targetdir) > 358.555555555 )) then {
-				_dodge=true;
+		// Continuous aimed-at check (every 0.3s)
+		if (time > _lastAimedAtCheck + 0.3) then {
+			_lastAimedAtCheck = time;
+			_isBeingAimedAt = [_unit] call _fnc_isBeingAimedAt;
+			
+			if (_isBeingAimedAt) then {
+				_dodge = true;
+				
+				// Crouch when aimed at but never prone
+				if (_cancrouch && {unitPos _unit != "MIDDLE"}) then {
+					_unit playactionnow "Crouch";
+					_unit setunitpos "MIDDLE";
+				};
+				
+				// Use tactical movement so they can fire while dodging
+				_anims = RNG_ANIM_Tact;
+			} else {
+				// Not aimed at - stand up for speed
+				if (_cancrouch && {unitPos _unit == "MIDDLE"} && {getSuppression _unit < 0.3}) then {
+					_unit playactionnow "Up";
+					_unit setunitpos "UP";
+				};
+			};
+		};
+		
+		// ===== FIRE WHILE DODGING =====
+		// When moving out of the way, keep shooting at the target
+		if (_dodge && {!isNull _target} && {alive _target}) then {
+			private _reldir = _unit getreldir getpos _target;
+			if ((_reldir < 30 OR _reldir > 330) && {([_unit, "FIRE", _target] checkVisibility [eyepos _unit, aimpos _target]) > 0.2}) then {
+				if (!(unitCombatMode _unit == "BLUE") && {_unit ammo currentweapon _unit > 0}) then {
+					for "_i" from 1 to (2 + floor random 4) do {
+						[_unit, currentmuzzle _unit] call BIS_fnc_fire;
+						sleep 0.03;
+					};
+				};
 			};
 		};
 		if (isnil "_pos" OR {((_unit distance2D _pos) > 70)} OR _dodge) then {
-			_leftpos=lineIntersectsSurfaces [aimPos _unit,(AGLtoASL (_unit getrelpos [20,270])), _unit, objNull, true, 1,"FIRE"];
-			_rightpos=lineIntersectsSurfaces [aimPos _unit,(AGLtoASL (_unit getrelpos [20,90])), _unit, objNull, true, 1,"FIRE"];
-			switch (true) do {
-				case (_dodge) : {_pos = selectrandom [((_leftpos select 0) select 0),((_rightpos select 0) select 0)];};
-				case ((((_leftpos select 0) select 0) distance2D  _unit) > (((_rightpos select 0) select 0) distance2d _unit)) : {_pos=((_rightpos select 0) select 0);};
-				case ((((_leftpos select 0) select 0) distance2D  _unit) < (((_rightpos select 0) select 0) distance2d _unit)) : {_pos=((_leftpos select 0) select 0);};
-				default {};
+			// When dodging from being aimed at, use tighter faster sidesteps
+			private _dodgeDist = if (_dodge) then {8 + random 6} else {20};
+			_leftpos=lineIntersectsSurfaces [aimPos _unit,(AGLtoASL (_unit getrelpos [_dodgeDist,270])), _unit, objNull, true, 1,"FIRE"];
+			_rightpos=lineIntersectsSurfaces [aimPos _unit,(AGLtoASL (_unit getrelpos [_dodgeDist,90])), _unit, objNull, true, 1,"FIRE"];
+			// Also try diagonal dodges when aimed at
+			private _fwdLeftPos = if (_dodge) then {
+				lineIntersectsSurfaces [aimPos _unit,(AGLtoASL (_unit getrelpos [_dodgeDist,315])), _unit, objNull, true, 1,"FIRE"]
+			} else {[]};
+			private _fwdRightPos = if (_dodge) then {
+				lineIntersectsSurfaces [aimPos _unit,(AGLtoASL (_unit getrelpos [_dodgeDist,45])), _unit, objNull, true, 1,"FIRE"]
+			} else {[]};
+			private _hasLeft = count _leftpos > 0;
+			private _hasRight = count _rightpos > 0;
+			private _hasFwdLeft = count _fwdLeftPos > 0;
+			private _hasFwdRight = count _fwdRightPos > 0;
+			if (_hasLeft || _hasRight || _hasFwdLeft || _hasFwdRight) then {
+				private _leftP = if (_hasLeft) then {(_leftpos select 0) select 0} else {[0,0,0]};
+				private _rightP = if (_hasRight) then {(_rightpos select 0) select 0} else {[0,0,0]};
+				private _fwdLP = if (_hasFwdLeft) then {(_fwdLeftPos select 0) select 0} else {[0,0,0]};
+				private _fwdRP = if (_hasFwdRight) then {(_fwdRightPos select 0) select 0} else {[0,0,0]};
+				if (_dodge) then {
+					// When dodging, pick from all available directions randomly
+					private _options = [];
+					if (_hasLeft) then {_options pushBack _leftP};
+					if (_hasRight) then {_options pushBack _rightP};
+					if (_hasFwdLeft) then {_options pushBack _fwdLP};
+					if (_hasFwdRight) then {_options pushBack _fwdRP};
+					if (count _options > 0) then {
+						_pos = selectRandom _options;
+					};
+				} else {
+					switch (true) do {
+						case (_hasLeft && _hasRight && {(_leftP distance2D _unit) > (_rightP distance2D _unit)}) : {_pos = _rightP;};
+						case (_hasLeft && _hasRight && {(_leftP distance2D _unit) < (_rightP distance2D _unit)}) : {_pos = _leftP;};
+						case (_hasLeft) : {_pos = _leftP;};
+						case (_hasRight) : {_pos = _rightP;};
+						default {};
+					};
+				};
 			};
 		};
 		if (!isnil "_pos" && {((_unit distance2D _pos) < 70)}) then {
@@ -301,19 +384,15 @@ while {alive _unit} do {
 					_type=_types selectRandomWeighted _weight;
 				};
 				if ((_unit ammo currentweapon _unit < 2) && {_cancrouch && {!("reload" in (gesturestate _unit))}}) then {
-					_stance=["MIDDLE","DOWN"] selectRandomWeighted [1,0.2];
-					if (!((unitpos _unit) == _stance)) then {
-					_unit playactionnow _stance;
+					// Crouch to reload but never go prone
+					if (!((unitpos _unit) == "MIDDLE")) then {
+						_unit playactionnow "MIDDLE";
 					};
-					if (_stance=="MIDDLE") then {
 					_unit setunitpos "MIDDLE";
-					} else {
-						_unit setunitpos "DOWN";
-					};
-					
 				};
 			private _randomstop=random 15;
-			if (_randomstop > (15 - _skill)) then {_unit playactionnow "stop";sleep (_skill/10)};
+			// Don't randomly stop if being aimed at
+			if (!_isBeingAimedAt && {_randomstop > (15 - _skill)}) then {_unit playactionnow "stop";sleep (_skill/10)};
 			};
 			if ((animationstate _unit == "amovpercmstpsraswrfldnon" OR animationstate _unit == "amovpknlmstpsraswrfldnon") && {((vectorMagnitude (velocityModelSpace _unit)) < 1)}) then {_unit playactionnow "stop";};
 	_unit setvariable ["RNG_target", _target];

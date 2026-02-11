@@ -48,6 +48,7 @@ _man addMPEventHandler ["MPRespawn", {
 	params ["_unit", "_corpse"];
 				_unit enableai "PATH";
 				_unit enableai "MOVE";
+				_unit enableai "ANIM";
 				_unit enableai "FSM";
 				_unit enableai "COVER";
 				_unit enableai "AIMINGERROR";

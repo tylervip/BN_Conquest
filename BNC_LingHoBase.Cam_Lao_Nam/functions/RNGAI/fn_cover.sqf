@@ -32,6 +32,9 @@ private _cancrouch = true;
 private _lastCoverFind = 0;
 private _suppressTime = 0;
 private _currentDistToTarget = if (!isNull _target) then {_unit distance _target} else {100};
+private _lastAimedAtCheck = 0;
+private _isBeingAimedAt = false;
+private _lastDodgeTime = 0;
 
 if (!(unitPos _unit == "Auto")) then {_cancrouch = false;};
 
@@ -92,6 +95,45 @@ private _fnc_findClearPath = {
 	};
 	
 	_clearPos
+};
+
+// ============= AIMED-AT DETECTION =============
+// Returns true if any enemy is aiming at the unit and can see them
+private _fnc_isBeingAimedAt = {
+	params ["_unit"];
+	private _aimedAt = false;
+	private _nearEnemies = _unit targets [true, 200];
+	{
+		if (alive _x && {side _x != side _unit}) then {
+			private _aimDir = _x getreldir getpos _unit;
+			// Enemy aiming within 10 degrees of our position
+			if (_aimDir < 10 OR _aimDir > 350) then {
+				if (([_x, "FIRE", _unit] checkVisibility [eyepos _x, aimpos _unit]) > 0.3) then {
+					_aimedAt = true;
+				};
+			};
+		};
+		if (_aimedAt) exitWith {};
+	} forEach _nearEnemies;
+	_aimedAt
+};
+
+// ============= DODGE SIDESTEP =============
+// Quick lateral movement when caught in the open being aimed at
+private _fnc_dodgeSidestep = {
+	params ["_unit", "_target"];
+	private _dodgeDir = if (!isNull _target) then {_unit getDir _target} else {direction _unit};
+	// Pick a random side to dodge
+	private _side = selectRandom [90, -90];
+	private _dodgePos = [0,0,0];
+	// Try the chosen side first, then the other
+	{
+		private _testPos = _unit getPos [4 + random 3, _dodgeDir + _x];
+		if ([_unit, _testPos] call _fnc_isPathClear) exitWith {
+			_dodgePos = _testPos;
+		};
+	} forEach [_side, _side * -1, _side + 45, (_side + 45) * -1];
+	_dodgePos
 };
 
 // ============= BUILDING POSITION FINDER =============
@@ -267,6 +309,37 @@ while {alive _unit} do {
 		_unit dowatch _target;
 	};
 	
+	// ===== AIMED-AT CHECK - React to being aimed at =====
+	if (time > _lastAimedAtCheck + 0.4) then {
+		_lastAimedAtCheck = time;
+		_isBeingAimedAt = [_unit] call _fnc_isBeingAimedAt;
+		
+		if (_isBeingAimedAt) then {
+			// Being aimed at - crouch immediately for smaller profile
+			if (_cancrouch && {unitPos _unit != "MIDDLE" && unitPos _unit != "DOWN"}) then {
+				_unit playactionnow "Crouch";
+				_unit setunitpos "MIDDLE";
+			};
+			
+			// Dodge sidestep if in the open (not near cover) and not on cooldown
+			private _nearCover = nearestTerrainObjects [_unit, ["Tree","Bush","Wall","Rock","house","Building"], 4];
+			private _nearCoverDyn = nearestObjects [_unit, ["Wall","fence","Strategic","house"], 4];
+			if (count _nearCover == 0 && count _nearCoverDyn == 0 && {time > _lastDodgeTime + 1.5}) then {
+				_lastDodgeTime = time;
+				private _dodgePos = [_unit, _target] call _fnc_dodgeSidestep;
+				if !(_dodgePos isEqualTo [0,0,0]) then {
+					_pos = _dodgePos;
+				};
+			};
+		} else {
+			// Not being aimed at - safe to stand and move fast
+			if (_cancrouch && {unitPos _unit == "MIDDLE" || unitPos _unit == "DOWN"} && {getSuppression _unit < 0.3}) then {
+				_unit playactionnow "Up";
+				_unit setunitpos "UP";
+				_anims = RNG_ANIM_Run; // Sprint between cover
+			};
+		};
+	};
 	
 	// ===== PATH CLEARANCE CHECK - Avoid walls/buildings =====
 	if (!(_pos isEqualTo [0,0,0]) && {!([_unit, _pos] call _fnc_isPathClear)}) then {
@@ -291,19 +364,24 @@ while {alive _unit} do {
 	};
 	
 	// Suppress fire while moving (aggressive)
-	if (!isNull _target && {time > _suppressTime}) then {
+	// If being aimed at, prioritize moving over shooting
+	if (!isNull _target && {time > _suppressTime} && {!_isBeingAimedAt || {random 1 < 0.3}}) then {
 		if (([_unit, "FIRE", _target] checkVisibility [aimpos _unit, aimpos _target]) > 0.3) then {
 			// Quick suppressive burst while moving
-			for "_i" from 1 to (2 + floor random 3) do {
+			private _burstSize = if (_isBeingAimedAt) then {1 + floor random 2} else {2 + floor random 3};
+			for "_i" from 1 to _burstSize do {
 				[_unit, currentmuzzle _unit] call BIS_fnc_fire;
 				sleep 0.05;
 			};
-			_suppressTime = time + 0.8 + random 0.5;
+			_suppressTime = if (_isBeingAimedAt) then {time + 1.2 + random 0.5} else {time + 0.8 + random 0.5};
 		};
 	};
 	
 	// Face toward target while moving
 	if (!isNull _target) then {
+		private _targetDir = vectorNormalized ((aimpos _unit) vectorFromTo (aimpos _target));
+		// Flatten to horizontal to prevent vertical tilt causing spin
+		_targetDir = vectorNormalized [_targetDir select 0, _targetDir select 1, 0];
 		for "_i" from 1 to 5 do {
 			_unit setVelocityTransformation
 			[
@@ -312,7 +390,7 @@ while {alive _unit} do {
 				velocity _unit,
 				[(velocity _unit) select 0,(velocity _unit) select 1,-1],
 				vectordirvisual _unit,
-				(aimpos _unit) vectorFromTo (aimpos _target),
+				_targetDir,
 				[0,0,1],
 				[0,0,1],
 				(_i*0.2)
@@ -331,8 +409,42 @@ while {alive _unit} do {
 				_unit playactionnow "stop";
 				_unit setVelocity [0, 0, 0];
 
-				// Quick pause at cover (0.5-1s) then push again
-				sleep (0.5 + random 0.5);
+				// At cover: crouch and check threat before pushing
+				if (_cancrouch) then {
+					_unit playactionnow "Crouch";
+					_unit setunitpos "MIDDLE";
+				};
+				
+				// Fire from cover position before moving again
+				if (!isNull _target && {([_unit, "FIRE", _target] checkVisibility [aimpos _unit, aimpos _target]) > 0.3}) then {
+					for "_i" from 1 to (3 + floor random 4) do {
+						[_unit, currentmuzzle _unit] call BIS_fnc_fire;
+						sleep 0.04;
+					};
+				};
+				
+				// Wait at cover until not being aimed at, then push
+				private _coverWaitStart = time;
+				private _maxWait = 3; // Max 3s wait at cover
+				waitUntil {
+					sleep 0.3;
+					private _stillAimedAt = [_unit] call _fnc_isBeingAimedAt;
+					// Fire back while waiting at cover
+					if (_stillAimedAt && {!isNull _target} && {([_unit, "FIRE", _target] checkVisibility [aimpos _unit, aimpos _target]) > 0.3}) then {
+						for "_i" from 1 to (2 + floor random 3) do {
+							[_unit, currentmuzzle _unit] call BIS_fnc_fire;
+							sleep 0.04;
+						};
+					};
+					!alive _unit || !_stillAimedAt || (time - _coverWaitStart > _maxWait)
+				};
+				
+				// Stand up to sprint to next cover
+				if (_cancrouch && alive _unit) then {
+					_unit playactionnow "Up";
+					_unit setunitpos "UP";
+					_anims = RNG_ANIM_Run;
+				};
 				// Find new forward cover
 				private _newPos = [_unit, _target] call _fnc_findAggressiveCover;
 				if !(_newPos isEqualTo [0,0,0]) then {

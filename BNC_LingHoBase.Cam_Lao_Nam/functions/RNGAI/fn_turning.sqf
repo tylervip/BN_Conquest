@@ -12,6 +12,9 @@ while {_unit getvariable ["RNG_incombat", false] && !(_unit getvariable ["RNG_co
 	if (animationstate _unit == "amovpercmstpsraswrfldnon" OR animationstate _unit == "amovpknlmstpsraswrfldnon") then {_unit setvelocity [0,0,0]};
 	
 	if (!(isNull _target)) then {
+		private _targetDir = vectorNormalized ((aimpos _unit) vectorFromTo (aimpos _target));
+		// Flatten to horizontal to prevent vertical tilt causing spin
+		_targetDir = vectorNormalized [_targetDir select 0, _targetDir select 1, 0];
 		for "_i" from 1 to 10 do {
 			_unit setVelocityTransformation
 			[
@@ -20,7 +23,7 @@ while {_unit getvariable ["RNG_incombat", false] && !(_unit getvariable ["RNG_co
 				[(velocity _unit) select 0,(velocity _unit) select 1,-1],
 				[(velocity _unit) select 0,(velocity _unit) select 1,-1],
 				vectordirvisual _unit,
-				(((aimpos _unit) vectorfromto (aimpos _target)) vectoradd ((vectordir _unit) vectorDiff (_unit weaponDirection currentWeapon _unit))),
+				_targetDir,
 				vectorup _unit,
 				vectorup _unit,
 				(_i*0.1)
@@ -48,8 +51,9 @@ while {_unit getvariable ["RNG_incombat", false] && !(_unit getvariable ["RNG_co
 	}; 
 	
 	////Firing
+	if (!isNull _target) then {
 	private _reldir = _unit getreldir getpos _target;
-	if ((([_unit, "VIEW", _target] checkVisibility [eyepos _unit, aimpos _target]) > 0 OR ([_unit, "VIEW", _target] checkVisibility [aimpos _unit, eyepos _target]) > 0) && {!isnull _target && {(_reldir) < 25.55555555555 OR (_reldir) > 335.555555555}}) then {
+	if ((([_unit, "VIEW", _target] checkVisibility [eyepos _unit, aimpos _target]) > 0 OR ([_unit, "VIEW", _target] checkVisibility [aimpos _unit, eyepos _target]) > 0) && {(_reldir) < 25.55555555555 OR (_reldir) > 335.555555555}) then {
 		private _infrontline = lineIntersectsSurfaces [eyePos _unit, ((eyepos _unit) vectorAdd (_unit weaponDirection currentWeapon _unit vectorMultiply 30)), _unit, objNull, true, 1];
 		if (count _infrontline > 0) then {
 			_infront = (_infrontline select 0) select 2;
@@ -65,6 +69,7 @@ while {_unit getvariable ["RNG_incombat", false] && !(_unit getvariable ["RNG_co
 		} else {
 			sleep 0.5;
 		};
+	};
 	};
 	sleep 0.05;
 };		

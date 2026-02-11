@@ -48,13 +48,9 @@ if (_unitPosition inArea [(getPosATL _finalSel), ((_XnY#1)#0),((_XnY#1)#1), (get
 
     //Filter down the closest positions
     private _acceptableRange = _unitPosition#2;
-    {
-        if ((_x#2) < (_acceptableRange - 1) || (_x#2) > (_acceptableRange + 1)) then
-        {
-            _tempA deleteAt _forEachIndex;
-        };
-
-    } foreach _tempA;
+    _tempA = _tempA select {
+        ((_x#2) >= (_acceptableRange - 1)) && ((_x#2) <= (_acceptableRange + 1))
+    };
 
     if (_tempA isEqualTo []) then {_tempA = _tempB;};
 
