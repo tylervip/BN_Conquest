@@ -47,7 +47,7 @@ drop_Action_CarePackage = player addAction [
         };
     },
     nil,
-    1.5,
+    10,
     true,
     true,
     "",

@@ -23,16 +23,16 @@ _availableKillstreaks pushBack [
     }
 ];
 
-// _availableKillstreaks pushBack [
-//     "Airstrike",
-//     {
-//         params ["_caller"];
-//         drop_Action_Airstrike = _caller addAction [
-//             "Call Airstrike",
-//             { _this execVM "Killstreak\airstrike.sqf"; }
-//         ];
-//     }
-// ];
+_availableKillstreaks pushBack [
+    "Airstrike",
+    {
+        params ["_caller"];
+        drop_Action_Airstrike = _caller addAction [
+            "Call Airstrike",
+            { _this execVM "Killstreak\airstrike.sqf"; }
+        ];
+    }
+];
 
 _availableKillstreaks pushBack [
     "Daisy Cutter",

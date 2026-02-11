@@ -90,7 +90,7 @@ if (!alive _plane || isNull _plane) exitWith {
 private _bombSpawnPos = [
     _targetPos select 0,
     _targetPos select 1,
-    getPosASL _plane select 2
+    (getPosASL _plane select 2) - 10 // Slightly below plane altitude
 ];
 
 private _bomb = "vn_bomb_500_blu1b_fb_ammo" createVehicle _bombSpawnPos;
@@ -103,6 +103,19 @@ waitUntil { isNull _bomb || damage _bomb > 0.9 || !alive _bomb };
 // Delete local marker
 if (!isNil "_napalmMarker") then {
     deleteMarker _napalmMarker;
+};
+
+// Fly away from target
+private _exitPos = _targetPos vectorAdd [sin(random 360) * 2000, cos(random 360) * 2000, 0];
+private _exitWP = _pilotGrp addWaypoint [_exitPos, 0];
+_exitWP setWaypointType "MOVE";
+_exitWP setWaypointSpeed "FULL";
+_exitWP setWaypointBehaviour "CARELESS";
+
+// Wait for plane to fly away
+waitUntil {
+	sleep 1;
+	!alive _plane || _plane distance2D _targetPos > 1500
 };
 
 // Spawn fire effects
@@ -134,7 +147,7 @@ for "_i" from 1 to 20 do {
 } forEach _fires;
 
 // Cleanup aircraft and pilot
-sleep 30;
+sleep 10;
 
 // Safely delete plane crew
 private _driver = driver _plane;

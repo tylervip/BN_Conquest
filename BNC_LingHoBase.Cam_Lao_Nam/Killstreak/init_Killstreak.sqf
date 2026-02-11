@@ -31,10 +31,10 @@ player setVariable ["ks_carepackage_added", false];
             ];
         };
 
-        if (_kills >= 1000 && !(player getVariable ["ks_airstrike_added", false])) then {
+        if (_kills >= 25 && !(player getVariable ["ks_airstrike_added", false])) then {
             player setVariable ["ks_airstrike_added", true];
             drop_Action_Airstrike = player addAction [
-                "Call Air Strike",
+                "Call Airstrike",
                 { _this execVM "Killstreak\airstrike.sqf"; },
                 nil, 1.5, true, false, "", "_this == _target"
             ];
