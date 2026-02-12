@@ -40,7 +40,8 @@ MRS_vehicles = [
         1.5,
         false,
         true,
-        "(_this distance _target) < 3"
+        "",
+        "_this distance _target < 5"
     ];
 } forEach MRS_vehicles;
 

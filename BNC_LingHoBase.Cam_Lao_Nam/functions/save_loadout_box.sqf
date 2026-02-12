@@ -21,10 +21,11 @@ if (hasInterface) then {
                 hint "Loadout saved!";
             },
             nil,
-            1.5,
-            false,
+            2,
             true,
-            "(_this distance _target) < 3"
+            true,
+            "",
+            "_this distance _target < 5"
         ];
 
         _x addAction [
@@ -36,10 +37,11 @@ if (hasInterface) then {
                 hint "Nearby gear cleaned up.";
             },
             nil,
-            1.5,
+            2,
             false,
             true,
-            "(_this distance _target) < 3"
+            "",
+            "_this distance _target < 5"
         ];
     } forEach _boxes;
 };

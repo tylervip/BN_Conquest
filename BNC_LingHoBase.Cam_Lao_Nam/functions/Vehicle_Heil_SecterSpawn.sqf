@@ -15,6 +15,7 @@ sleep 2; // Give sectors time to fully initialize
 
 private _opforClass = "vn_o_air_mi2_04_01";
 private _bluforClass = "vn_b_air_uh1c_04_01";
+private _heliCooldown = 300; // Cooldown in seconds after helicopter is destroyed
 
 // --- FIND ALL HELI SPAWN POINTS ---
 // Search for all objects with variable names matching Heil_SpawnPoint pattern
@@ -55,7 +56,8 @@ private _spawnConfigs = [];
     
     if (!isNull _nearestSector) then {
         _spawnConfigs pushBack [_spawnObj, _nearestSector, _spawnName];
-        diag_log format ["[HELI SPAWN] %1 -> Sector at %2 (distance: %3m)", _spawnName, getPos _nearestSector, round _nearestDist];
+        private _sectorName = _nearestSector getVariable ["name", "Unknown Sector"];
+        diag_log format ["[HELI SPAWN] %1 -> Sector: %2", _spawnName, _sectorName];
     } else {
         diag_log format ["[HELI SPAWN] WARNING: No sector found for %1", _spawnName];
     };
@@ -68,11 +70,12 @@ if (isNil "BNC_SectorHelis") then { BNC_SectorHelis = []; };
 {
     _x params ["_spawnPoint", "_sectorModule", "_spawnName"];
     
-    [_spawnPoint, _sectorModule, _bluforClass, _opforClass, _spawnName, _forEachIndex] spawn {
-        params ["_spawnPoint", "_sectorModule", "_bluforClass", "_opforClass", "_spawnName", "_index"];
+    [_spawnPoint, _sectorModule, _bluforClass, _opforClass, _spawnName, _forEachIndex, _heliCooldown] spawn {
+        params ["_spawnPoint", "_sectorModule", "_bluforClass", "_opforClass", "_spawnName", "_index", "_heliCooldown"];
         
         private _currentHeli = objNull;
         private _currentOwner = sideUnknown;
+        private _heliDestroyTime = -1;
         
         while {true} do {
             private _pos = getPosATL _spawnPoint;
@@ -85,46 +88,38 @@ if (isNil "BNC_SectorHelis") then { BNC_SectorHelis = []; };
                 deleteVehicle _currentHeli;
                 _currentHeli = objNull;
                 _currentOwner = sideUnknown;
-                _checkInterval = 300; // Cooldown for destroyed helicopter
+                _heliDestroyTime = time; // Record destroy time for cooldown
             };
-            
+
             // Check if ownership changed
             if (_owner != _currentOwner && {_owner in [west, east]}) then {
-                private _canReplace = false;
-                
-                // Check if any living unit or vehicle is within 5 meters of spawn point
-                private _nearUnits = nearestObjects [_pos, ["Man", "Vehicle"], 5];
-                _nearUnits = _nearUnits select {alive _x};
-                if (count _nearUnits > 0) exitWith {};
-                
-                if (!isNull _currentHeli) then {
-                    private _crew = crew _currentHeli;
-                    private _dist = _currentHeli distance2D _pos;
-                    
-                    if ((count _crew) == 0 && {_dist <= 2}) then {
+                // Don't spawn if heli is on cooldown from being destroyed
+                if (_heliDestroyTime == -1 || {time - _heliDestroyTime >= _heliCooldown}) then {
+                    // Remove existing heli if any
+                    if (!isNull _currentHeli) then {
                         deleteVehicle _currentHeli;
                         _currentHeli = objNull;
-                        _canReplace = true;
                     };
-                } else {
-                    _canReplace = true;
-                };
-                
-                if (_canReplace) then {
+                    // Spawn new heli for new owner
                     private _class = if (_owner isEqualTo west) then { _bluforClass } else { _opforClass };
-                    
                     _currentHeli = createVehicle [_class, _pos, [], 0, "NONE"];
                     _currentHeli setDir _dir;
                     _currentHeli setPosATL _pos;
-                    
                     _currentOwner = _owner;
-                    
-                    // Store in global array for reference
                     BNC_SectorHelis set [_index, [_currentHeli, _currentOwner, _spawnName]];
-                    publicVariable "BNC_SectorHelis";
-                    
-                    diag_log format ["[HELI SPAWN] Spawned %1 helicopter at %2", _owner, _spawnName];
+                    diag_log format ["[HELI SPAWN] Ownership changed, spawned %1 helicopter at %2", _owner, _spawnName];
                 };
+            };
+
+            // Check if heli needs to respawn after cooldown (no ownership change needed)
+            if (_currentHeli isEqualTo objNull && {_heliDestroyTime != -1} && {time - _heliDestroyTime >= _heliCooldown} && {_owner in [west, east]}) then {
+                private _class = if (_owner isEqualTo west) then { _bluforClass } else { _opforClass };
+                _currentHeli = createVehicle [_class, _pos, [], 0, "NONE"];
+                _currentHeli setDir _dir;
+                _currentHeli setPosATL _pos;
+                _currentOwner = _owner;
+                BNC_SectorHelis set [_index, [_currentHeli, _currentOwner, _spawnName]];
+                diag_log format ["[HELI SPAWN] Cooldown expired, respawned %1 helicopter at %2", _owner, _spawnName];
             };
             
             sleep _checkInterval;

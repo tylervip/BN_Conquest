@@ -8,7 +8,7 @@ class EditorData
 	toggles=554;
 	class ItemIDProvider
 	{
-		nextID=1594;
+		nextID=1666;
 	};
 	class MarkerIDProvider
 	{
@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=1532;
+		nextID=1578;
 	};
 	class Camera
 	{
-		pos[]={14214.351,98.559677,17906.438};
-		dir[]={0.42000839,-0.73213387,0.53629434};
-		up[]={0.45143095,0.68113947,0.57641715};
-		aside[]={0.78730392,-2.1702726e-07,-0.61658895};
+		pos[]={14694.69,29.979624,18350.178};
+		dir[]={0.2112496,-0.5313499,0.8204416};
+		up[]={0.13249853,0.84713304,0.51458943};
+		aside[]={0.96844995,-1.110202e-07,-0.24936017};
 	};
 };
 binarizationWanted=0;
@@ -54,13 +54,14 @@ addons[]=
 	"env_assets_f_vietnam_c",
 	"static_f_vietnam_04_c",
 	"static_f_vietnam_c",
-	"A3_Misc_F_Helpers"
+	"A3_Misc_F_Helpers",
+	"A3_Signs_F"
 };
 class AddonsMetaData
 {
 	class List
 	{
-		items=21;
+		items=22;
 		class Item0
 		{
 			className="A3_Ui_F";
@@ -205,6 +206,13 @@ class AddonsMetaData
 		{
 			className="A3_Misc_F";
 			name="Arma 3 - 3D Aids and Helpers";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
+		class Item21
+		{
+			className="A3_Signs_F";
+			name="Arma 3 - Signs";
 			author="Bohemia Interactive";
 			url="https://www.arma3.com";
 		};
@@ -374,7 +382,7 @@ class Mission
 	};
 	class Entities
 	{
-		items=282;
+		items=284;
 		class Item0
 		{
 			dataType="Layer";
@@ -945,19 +953,18 @@ class Mission
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={13851.42,6.317934,18343.877};
-						angles[]={6.2751918,3.7781184,6.247201};
+						position[]={13851.42,6.3179626,18343.877};
+						angles[]={6.2751913,3.7781143,6.2471962};
 					};
 					side="Empty";
 					flags=4;
 					class Attributes
 					{
 						name="Arsenal_box_1";
-						disableSimulation=1;
 					};
 					id=156;
 					type="Land_vn_us_weapons_stack2";
-					atlOffset=0.0099711418;
+					atlOffset=0.009999752;
 					class CustomAttributes
 					{
 						class Attribute0
@@ -2091,7 +2098,7 @@ class Mission
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={13854.087,9.0561733,18340.684};
+						position[]={13854.087,9.0557394,18340.684};
 						angles[]={0,1.41342,0};
 					};
 					side="Empty";
@@ -2102,7 +2109,7 @@ class Mission
 					};
 					id=1382;
 					type="Land_Billboard_F";
-					atlOffset=1.1414337;
+					atlOffset=1.1409998;
 					class CustomAttributes
 					{
 						class Attribute0
@@ -2114,7 +2121,7 @@ class Mission
 								class data
 								{
 									singleType="STRING";
-									value="images\BN_Welcome_20240621.paa";
+									value="";
 								};
 							};
 						};
@@ -4411,7 +4418,7 @@ class Mission
 				};
 			};
 			id=172;
-			atlOffset=0.69930077;
+			atlOffset=0.69924641;
 		};
 		class Item2
 		{
@@ -5031,7 +5038,7 @@ class Mission
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={14696.974,4.911849,18387.277};
+						position[]={14697.343,4.9377751,18388.289};
 						angles[]={0,1.4291718,0};
 					};
 					side="Empty";
@@ -5043,7 +5050,7 @@ class Mission
 					};
 					id=155;
 					type="Land_vn_us_weapons_stack3";
-					atlOffset=-0.023216724;
+					atlOffset=-0.00063419342;
 					class CustomAttributes
 					{
 						class Attribute0
@@ -8554,7 +8561,7 @@ class Mission
 							dataType="Object";
 							class PositionInfo
 							{
-								position[]={14697.356,5.6192317,18388.48};
+								position[]={14697.356,5.6189084,18388.48};
 								angles[]={0,3.9701352,0};
 							};
 							side="Empty";
@@ -8565,7 +8572,7 @@ class Mission
 							};
 							id=99;
 							type="Land_vn_temple_ruin_04";
-							atlOffset=-0.029676914;
+							atlOffset=-0.03000021;
 							class CustomAttributes
 							{
 								class Attribute0
@@ -8586,7 +8593,7 @@ class Mission
 						};
 					};
 					id=392;
-					atlOffset=-0.021061897;
+					atlOffset=-0.021223545;
 				};
 				class Item24
 				{
@@ -8911,7 +8918,7 @@ class Mission
 				};
 			};
 			id=173;
-			atlOffset=0.010375977;
+			atlOffset=0.010375023;
 		};
 		class Item3
 		{
@@ -10467,7 +10474,7 @@ class Mission
 								class data
 								{
 									singleType="SCALAR";
-									value=10;
+									value=2;
 								};
 							};
 						};
@@ -10480,7 +10487,7 @@ class Mission
 								class data
 								{
 									singleType="SCALAR";
-									value=10;
+									value=1;
 								};
 							};
 						};
@@ -37315,11 +37322,10 @@ class Mission
 			dataType="Object";
 			class PositionInfo
 			{
-				position[]={14711.237,10.764756,18394.502};
+				position[]={14711.237,10.563394,18394.502};
 				angles[]={0,0.82911873,0};
 			};
 			side="Empty";
-			flags=4;
 			class Attributes
 			{
 				init="this setObjectTexture [0,""images\BN_Welcome_20240621.paa""];";
@@ -37327,7 +37333,7 @@ class Mission
 			};
 			id=1383;
 			type="Land_Billboard_F";
-			atlOffset=0.14260578;
+			atlOffset=3.3717384;
 			class CustomAttributes
 			{
 				class Attribute0
@@ -37339,7 +37345,7 @@ class Mission
 						class data
 						{
 							singleType="STRING";
-							value="images\BN_Welcome_20240621.paa";
+							value="";
 						};
 					};
 				};
@@ -37720,6 +37726,104 @@ class Mission
 			type="mil_warning";
 			colorName="ColorPink";
 			id=1028;
+		};
+		class Item282
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={13853.278,6.7773714,18340.607};
+				angles[]={0,1.41342,0};
+			};
+			side="Empty";
+			flags=5;
+			class Attributes
+			{
+				init="this setObjectTexture [0,""images\SAVELOADOUT.paa""];";
+				disableSimulation=1;
+			};
+			id=1664;
+			type="Land_Sign_WarningMilitaryArea_F";
+			atlOffset=-0.4749999;
+			class CustomAttributes
+			{
+				class Attribute0
+				{
+					property="ObjectTextureCustom0";
+					expression="_this setObjectTextureGlobal [0,_value]";
+					class Value
+					{
+						class data
+						{
+							singleType="STRING";
+							value="";
+						};
+					};
+				};
+				class Attribute1
+				{
+					property="allowDamage";
+					expression="_this allowdamage _value;";
+					class Value
+					{
+						class data
+						{
+							singleType="BOOL";
+							value=0;
+						};
+					};
+				};
+				nAttributes=2;
+			};
+		};
+		class Item283
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={14697.022,5.2629085,18386.215};
+				angles[]={0,3.9701352,0};
+			};
+			side="Empty";
+			flags=5;
+			class Attributes
+			{
+				init="this setObjectTexture [0,""images\SAVELOADOUT.paa""];";
+				disableSimulation=1;
+			};
+			id=1665;
+			type="Land_Sign_WarningMilitaryArea_F";
+			atlOffset=-0.71000004;
+			class CustomAttributes
+			{
+				class Attribute0
+				{
+					property="ObjectTextureCustom0";
+					expression="_this setObjectTextureGlobal [0,_value]";
+					class Value
+					{
+						class data
+						{
+							singleType="STRING";
+							value="";
+						};
+					};
+				};
+				class Attribute1
+				{
+					property="allowDamage";
+					expression="_this allowdamage _value;";
+					class Value
+					{
+						class data
+						{
+							singleType="BOOL";
+							value=0;
+						};
+					};
+				};
+				nAttributes=2;
+			};
 		};
 	};
 	class Connections

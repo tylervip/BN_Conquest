@@ -7,6 +7,12 @@
 addMissionEventHandler ["HandleDisconnect", {
     params ["_unit", "_id", "_uid", "_name"];
     deleteVehicle _unit;
+    private _grp = _unit group;
+    if (_grp != objNull) then {
+        if (count (units _grp) == 0 && {count (units _grp select {isPlayer _x}) == 0}) then {
+            deleteGroup _grp;
+        };
+    };
     false
 }];
 

@@ -15,6 +15,7 @@ sleep 2; // Give sectors time to fully initialize
 
 private _opforClass = "vn_o_armor_t54b_01";
 private _bluforClass = "vn_b_armor_m48_01_01";
+private _tankCooldown = 180; // Cooldown in seconds after tank is destroyed
 
 // --- FIND ALL TANK SPAWN POINTS ---
 private _allSpawnPoints = [];
@@ -53,7 +54,8 @@ private _spawnConfigs = [];
     
     if (!isNull _nearestSector) then {
         _spawnConfigs pushBack [_spawnObj, _nearestSector, _spawnName];
-        diag_log format ["[TANK SPAWN] %1 -> Sector at %2 (distance: %3m)", _spawnName, getPos _nearestSector, round _nearestDist];
+        private _sectorName = _nearestSector getVariable ["name", "Unknown Sector"];
+        diag_log format ["[TANK SPAWN] %1 -> Sector: %2", _spawnName, _sectorName];
     } else {
         diag_log format ["[TANK SPAWN] WARNING: No sector found for %1", _spawnName];
     };
@@ -66,11 +68,12 @@ if (isNil "BNC_SectorTanks") then { BNC_SectorTanks = []; };
 {
     _x params ["_spawnPoint", "_sectorModule", "_spawnName"];
     
-    [_spawnPoint, _sectorModule, _bluforClass, _opforClass, _spawnName, _forEachIndex] spawn {
-        params ["_spawnPoint", "_sectorModule", "_bluforClass", "_opforClass", "_spawnName", "_index"];
+    [_spawnPoint, _sectorModule, _bluforClass, _opforClass, _spawnName, _forEachIndex, _tankCooldown] spawn {
+        params ["_spawnPoint", "_sectorModule", "_bluforClass", "_opforClass", "_spawnName", "_index", "_tankCooldown"];
         
         private _currentTank = objNull;
         private _currentOwner = sideUnknown;
+        private _tankDestroyTime = -1;
         
         while {true} do {
             private _pos = getPosATL _spawnPoint;
@@ -83,46 +86,38 @@ if (isNil "BNC_SectorTanks") then { BNC_SectorTanks = []; };
                 deleteVehicle _currentTank;
                 _currentTank = objNull;
                 _currentOwner = sideUnknown;
-                _checkInterval = 180; // Cooldown for destroyed tank
+                _tankDestroyTime = time; // Record destroy time for cooldown
             };
-            
+
             // Check if ownership changed
             if (_owner != _currentOwner && {_owner in [west, east]}) then {
-                private _canReplace = false;
-                
-                // Check if any living unit or vehicle is within 5 meters of spawn point
-                private _nearUnits = nearestObjects [_pos, ["Man", "Vehicle"], 5];
-                _nearUnits = _nearUnits select {alive _x};
-                if (count _nearUnits > 0) exitWith {};
-                
-                if (!isNull _currentTank) then {
-                    private _crew = crew _currentTank;
-                    private _dist = _currentTank distance2D _pos;
-                    
-                    if ((count _crew) == 0 && {_dist <= 5}) then {
+                // Don't spawn if tank is on cooldown from being destroyed
+                if (_tankDestroyTime == -1 || {time - _tankDestroyTime >= _tankCooldown}) then {
+                    // Remove existing tank if any
+                    if (!isNull _currentTank) then {
                         deleteVehicle _currentTank;
                         _currentTank = objNull;
-                        _canReplace = true;
                     };
-                } else {
-                    _canReplace = true;
-                };
-                
-                if (_canReplace) then {
+                    // Spawn new tank for new owner
                     private _class = if (_owner isEqualTo west) then { _bluforClass } else { _opforClass };
-                    
                     _currentTank = createVehicle [_class, _pos, [], 0, "NONE"];
                     _currentTank setDir _dir;
                     _currentTank setPosATL _pos;
-                    
                     _currentOwner = _owner;
-                    
-                    // Store in global array for reference
                     BNC_SectorTanks set [_index, [_currentTank, _currentOwner, _spawnName]];
-                    publicVariable "BNC_SectorTanks";
-                    
-                    diag_log format ["[TANK SPAWN] Spawned %1 tank at %2", _owner, _spawnName];
+                    diag_log format ["[TANK SPAWN] Ownership changed, spawned %1 tank at %2", _owner, _spawnName];
                 };
+            };
+
+            // Check if tank needs to respawn after cooldown (no ownership change needed)
+            if (_currentTank isEqualTo objNull && {_tankDestroyTime != -1} && {time - _tankDestroyTime >= _tankCooldown} && {_owner in [west, east]}) then {
+                private _class = if (_owner isEqualTo west) then { _bluforClass } else { _opforClass };
+                _currentTank = createVehicle [_class, _pos, [], 0, "NONE"];
+                _currentTank setDir _dir;
+                _currentTank setPosATL _pos;
+                _currentOwner = _owner;
+                BNC_SectorTanks set [_index, [_currentTank, _currentOwner, _spawnName]];
+                diag_log format ["[TANK SPAWN] Cooldown expired, respawned %1 tank at %2", _owner, _spawnName];
             };
             
             sleep _checkInterval;
