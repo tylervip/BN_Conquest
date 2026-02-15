@@ -146,7 +146,17 @@ onMapSingleClick {
 
             private _markerPos = getMarkerPos _markerName;
             if (_clickpos distance2D _markerPos < _clickRadius) exitWith {
-                _finalPos = _markerPos getPos [random 15, random 360];
+                for "_i" from 1 to _maxAttempts do {
+                    private _candidatePos = _markerPos getPos [random 15, random 360];
+
+                    if (
+                        nearestObjects [_candidatePos, ["House","Building", "Thing", "Static"], 5] isEqualTo [] &&
+                        nearestTerrainObjects [_candidatePos, ["ROCK"], 10] isEqualTo [] &&
+                        !(surfaceIsWater _candidatePos)
+                    ) exitWith {
+                        _finalPos = _candidatePos;
+                    };
+                };
             };
         } forEach [["base_west", west], ["base_east", east]];
     };

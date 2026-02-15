@@ -62,7 +62,7 @@
                 private _offset = [_distance * cos _angle, _distance * sin _angle, 0];
                 private _candidatePos = _sectorPos vectorAdd _offset;
 
-                private _nearBuildings = nearestObjects [_candidatePos, ["House", "Building"], 3];
+                private _nearBuildings = nearestObjects [_candidatePos, ["House", "Building"], 5];
                 private _nearTrees = nearestTerrainObjects [_candidatePos, ["TREE"], 1];
                 private _nearRocks = nearestTerrainObjects [_candidatePos, ["ROCK"], 30];
                 private _isWater = surfaceIsWater _candidatePos;
@@ -151,7 +151,7 @@
                                 };
 
                                 private _wp = _grp addWaypoint [position _targetSector, 0];
-                                _wp setWaypointType "move";
+                                _wp setWaypointType "SAD";
                                 _wp setWaypointBehaviour "COMBAT";
                                 _wp setWaypointCombatMode "RED";
                                 _wp setWaypointSpeed "FULL";
