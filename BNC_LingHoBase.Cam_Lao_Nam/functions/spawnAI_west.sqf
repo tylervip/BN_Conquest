@@ -64,7 +64,7 @@
 
                 private _nearBuildings = nearestObjects [_candidatePos, ["House", "Building"], 5];
                 private _nearTrees = nearestTerrainObjects [_candidatePos, ["TREE"], 1];
-                private _nearRocks = nearestTerrainObjects [_candidatePos, ["ROCK"], 30];
+                private _nearRocks = nearestTerrainObjects [_candidatePos, ["ROCK"], 30] + nearestObjects [_candidatePos, ["ROCK"], 30];
                 private _isWater = surfaceIsWater _candidatePos;
                 private _enemyNearbyCount = ({side _x != _side && _x distance2D _candidatePos < _safeRadius} count allUnits);
 

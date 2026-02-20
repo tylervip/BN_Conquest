@@ -33,7 +33,7 @@ onMapSingleClick {
 
     private _distance = 100;
     private _maxAttempts = 20;
-    private _safeRadius = 25;
+    private _safeRadius = 50;
     private _clickRadius = 20;
 
     // ----------------------
@@ -123,7 +123,8 @@ onMapSingleClick {
                     ];
 
                     if (
-                        nearestObjects [_candidatePos, ["House","Building"], 5] isEqualTo [] &&
+                        nearestObjects [_candidatePos, ["House","Building", "Thing", "Static"], 5] isEqualTo [] &&
+                        nearestObjects [_candidatePos, ["ROCK"], 20] isEqualTo [] &&
                         nearestTerrainObjects [_candidatePos, ["TREE"], 2] isEqualTo [] &&
                         nearestTerrainObjects [_candidatePos, ["ROCK"], 30] isEqualTo [] &&
                         !(surfaceIsWater _candidatePos) &&
@@ -152,6 +153,7 @@ onMapSingleClick {
                     if (
                         nearestObjects [_candidatePos, ["House","Building", "Thing", "Static"], 5] isEqualTo [] &&
                         nearestTerrainObjects [_candidatePos, ["ROCK"], 10] isEqualTo [] &&
+                        nearestObjects [_candidatePos, ["ROCK"], 10] isEqualTo [] &&
                         !(surfaceIsWater _candidatePos)
                     ) exitWith {
                         _finalPos = _candidatePos;
