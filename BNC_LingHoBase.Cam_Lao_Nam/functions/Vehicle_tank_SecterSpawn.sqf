@@ -95,8 +95,13 @@ if (isNil "BNC_SectorTanks") then { BNC_SectorTanks = []; };
                 if (_tankDestroyTime == -1 || {time - _tankDestroyTime >= _tankCooldown}) then {
                     // Remove existing tank if any
                     if (!isNull _currentTank) then {
-                        deleteVehicle _currentTank;
-                        _currentTank = objNull;
+                        private _playersInTank = crew _currentTank select {isPlayer _x};
+                        if ((count _playersInTank) == 0) then {
+                            deleteVehicle _currentTank;
+                            _currentTank = objNull;
+                        } else {
+                            diag_log format ["[TANK SPAWN] Skipping deletion of %1 because players are inside.", _spawnName];
+                        };
                     };
                     // Spawn new tank for new owner
                     private _class = if (_owner isEqualTo west) then { _bluforClass } else { _opforClass };

@@ -97,8 +97,13 @@ if (isNil "BNC_SectorHelis") then { BNC_SectorHelis = []; };
                 if (_heliDestroyTime == -1 || {time - _heliDestroyTime >= _heliCooldown}) then {
                     // Remove existing heli if any
                     if (!isNull _currentHeli) then {
-                        deleteVehicle _currentHeli;
-                        _currentHeli = objNull;
+                        private _playersInHeli = crew _currentHeli select {isPlayer _x};
+                        if ((count _playersInHeli) == 0) then {
+                            deleteVehicle _currentHeli;
+                            _currentHeli = objNull;
+                        } else {
+                            diag_log format ["[HELI SPAWN] Skipping deletion of %1 because players are inside.", _spawnName];
+                        };
                     };
                     // Spawn new heli for new owner
                     private _class = if (_owner isEqualTo west) then { _bluforClass } else { _opforClass };

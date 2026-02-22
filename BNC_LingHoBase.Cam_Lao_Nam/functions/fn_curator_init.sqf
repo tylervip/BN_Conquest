@@ -1,6 +1,6 @@
 /*
 	fn_curator_init.sqf
-	ather: Tylervip
+	Author: Tylervip
 	Called from initPlayerLocal.sqf — automatically remoteExecs to server.
 	and onPlayerRespawn.sqf to re-assign curator after respawn.
 	Usage: [player] call BNC_fnc_curator_init;
@@ -13,8 +13,6 @@ params ["_player"];
 if (!isServer) exitWith {
 	[_player] remoteExecCall ["BNC_fnc_curator_init", 2];
 };
-
-BIS_fnc_endMission = {};
 
 // Define curator UIDs - add your Steam UIDs here
 private _curatorUIDs = [
