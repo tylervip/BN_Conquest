@@ -21,9 +21,9 @@ class EditorData
 	class Camera
 	{
 		pos[]={7736.0435,73.089554,10778.542};
-		dir[]={0.41739494,-0.69420928,-0.58650076};
-		up[]={0.40254951,0.71971864,-0.5656448};
-		aside[]={-0.81479734,5.2750693e-07,-0.57986265};
+		dir[]={0.41736829,-0.69416469,-0.58646321};
+		up[]={0.40249485,0.71981621,-0.56556386};
+		aside[]={-0.81474018,0,-0.57982618};
 	};
 };
 binarizationWanted=0;
@@ -1079,8 +1079,8 @@ class Mission
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={7745.6763,45.621006,10752.277};
-						angles[]={0.061311573,5.997118,0.0086676618};
+						position[]={7745.6763,45.313942,10752.277};
+						angles[]={-0,5.997118,6.2212648};
 					};
 					side="Empty";
 					flags=4;
@@ -1091,7 +1091,6 @@ class Mission
 					};
 					id=1500;
 					type="Land_vn_us_weapons_stack2";
-					atlOffset=0.0054664612;
 					class CustomAttributes
 					{
 						class Attribute0
@@ -9515,7 +9514,7 @@ class Mission
 				{
 					dataType="Trigger";
 					position[]={8850.5283,19.127607,10659.447};
-					angle=5.4977865;
+					angle=5.497786;
 					class Attributes
 					{
 						text="BASE PROTECTION";
