@@ -1,5 +1,5 @@
-// This code goes into the BLUFOR base trigger's On Activation field
-// [thisTrigger] execVM "functions/opfor_base.sqf";
+// This code is registered as BNC_fnc_opforBase via functions.hpp
+// Call with: [thisTrigger] call BNC_fnc_opforBase;
 
 params ["_trigger"];
 

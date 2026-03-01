@@ -453,7 +453,7 @@ class Mission
 					class Attributes
 					{
 						text="outofbounds";
-						onActivation="[thisTrigger] execVM ""functions/out_of_bounds.sqf"";";
+						onActivation="[thisTrigger] call BNC_fnc_outOfBounds;";
 						sizeA=649.81799;
 						sizeB=514.33899;
 						repeatable=1;
@@ -1374,7 +1374,7 @@ class Mission
 					class Attributes
 					{
 						text="BASE PROTECTION";
-						onActivation="[thisTrigger] execVM ""functions/opfor_base.sqf"";";
+						onActivation="[thisTrigger] call BNC_fnc_opforBase;";
 						sizeA=100;
 						sizeB=100;
 						repeatable=1;
@@ -5462,7 +5462,7 @@ class Mission
 					class Attributes
 					{
 						text="BASE PROTECTION";
-						onActivation="[thisTrigger] execVM ""functions/blufor_base.sqf"";";
+						onActivation="[thisTrigger] call BNC_fnc_bluforBase;";
 						sizeA=100;
 						sizeB=100;
 						repeatable=1;

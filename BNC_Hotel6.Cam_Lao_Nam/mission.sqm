@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=1834;
+		nextID=1851;
 	};
 	class Camera
 	{
-		pos[]={8791.415,262.5162,10460.15};
-		dir[]={-0.83067024,-0.48287344,0.2773546};
-		up[]={-0.45804927,0.87566829,0.15294142};
-		aside[]={0.31672484,2.2980385e-07,0.9485755};
+		pos[]={7736.0435,73.089554,10778.542};
+		dir[]={0.41739494,-0.69420928,-0.58650076};
+		up[]={0.40254951,0.71971864,-0.5656448};
+		aside[]={-0.81479734,5.2750693e-07,-0.57986265};
 	};
 };
 binarizationWanted=0;
@@ -489,7 +489,7 @@ class Mission
 					class Attributes
 					{
 						text="outofbounds";
-						onActivation="[thisTrigger] execVM ""functions/out_of_bounds.sqf"";";
+						onActivation="[thisTrigger] call BNC_fnc_outOfBounds;";
 						sizeA=750.75;
 						sizeB=498.86301;
 						repeatable=1;
@@ -1009,7 +1009,7 @@ class Mission
 					class Attributes
 					{
 						text="BASE PROTECTION";
-						onActivation="[thisTrigger] execVM ""functions/opfor_base.sqf"";";
+						onActivation="[thisTrigger] call BNC_fnc_opforBase;";
 						sizeA=100;
 						sizeB=100;
 						repeatable=1;
@@ -1079,8 +1079,8 @@ class Mission
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={7790.1309,43.196236,10827.418};
-						angles[]={6.0704541,1.4249933,5.6984205};
+						position[]={7745.6763,45.621006,10752.277};
+						angles[]={0.061311573,5.997118,0.0086676618};
 					};
 					side="Empty";
 					flags=4;
@@ -1091,7 +1091,7 @@ class Mission
 					};
 					id=1500;
 					type="Land_vn_us_weapons_stack2";
-					atlOffset=-0.30706024;
+					atlOffset=0.0054664612;
 					class CustomAttributes
 					{
 						class Attribute0
@@ -9515,11 +9515,11 @@ class Mission
 				{
 					dataType="Trigger";
 					position[]={8850.5283,19.127607,10659.447};
-					angle=5.497787;
+					angle=5.4977865;
 					class Attributes
 					{
 						text="BASE PROTECTION";
-						onActivation="[thisTrigger] execVM ""functions/blufor_base.sqf"";";
+						onActivation="[thisTrigger] call BNC_fnc_bluforBase;";
 						sizeA=100;
 						sizeB=100;
 						repeatable=1;

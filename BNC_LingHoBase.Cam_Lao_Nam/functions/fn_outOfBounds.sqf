@@ -1,5 +1,5 @@
 //this code is in a trigger
-//[thisTrigger] execVM "functions\out_of_bounds.sqf";
+//[thisTrigger] call BNC_fnc_outOfBounds;
 
 params ["_trigger"];
 
