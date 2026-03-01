@@ -61,7 +61,7 @@
                 private _offset = [_distance * cos _angle, _distance * sin _angle, 0];
                 private _candidatePos = _sectorPos vectorAdd _offset;
 
-                private _nearBuildings = nearestObjects [_candidatePos, ["House", "Building"], 5];
+                private _nearBuildings = nearestObjects [_candidatePos, ["House", "Building"], 10];
                 private _nearTrees = nearestTerrainObjects [_candidatePos, ["TREE"], 1];
                 private _nearRocks = nearestTerrainObjects [_candidatePos, ["ROCK"], 30] + nearestObjects [_candidatePos, ["ROCK"], 30];
                 private _isWater = surfaceIsWater _candidatePos;

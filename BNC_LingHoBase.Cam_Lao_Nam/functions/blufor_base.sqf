@@ -1,5 +1,5 @@
 // This code goes into the OPFOR base trigger's On Activation field
-// [thisTrigger] execVM "functions\blufor_base.sqf";
+// [thisTrigger] execVM "functions/blufor_base.sqf";
 
 params ["_trigger"];
 

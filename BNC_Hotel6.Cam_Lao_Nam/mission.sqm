@@ -5,10 +5,10 @@ class EditorData
 	angleGridStep=0.2617994;
 	scaleGridStep=1;
 	autoGroupingDist=10;
-	toggles=522;
+	toggles=1546;
 	class ItemIDProvider
 	{
-		nextID=2800;
+		nextID=2802;
 	};
 	class MarkerIDProvider
 	{
@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=1800;
+		nextID=1834;
 	};
 	class Camera
 	{
-		pos[]={8484.4775,213.16603,10685.903};
-		dir[]={-0.22949749,-0.74836195,-0.62253135};
-		up[]={-0.25884989,0.66329092,-0.70217717};
-		aside[]={-0.93840331,2.2416534e-06,0.34595308};
+		pos[]={8791.415,262.5162,10460.15};
+		dir[]={-0.83067024,-0.48287344,0.2773546};
+		up[]={-0.45804927,0.87566829,0.15294142};
+		aside[]={0.31672484,2.2980385e-07,0.9485755};
 	};
 };
 binarizationWanted=0;
@@ -485,13 +485,13 @@ class Mission
 				class Item4
 				{
 					dataType="Trigger";
-					position[]={8246.8633,38.653278,10502.867};
+					position[]={8249.1377,38.653622,10500.764};
 					class Attributes
 					{
 						text="outofbounds";
-						onActivation="[thisTrigger] execVM ""functions\out_of_bounds.sqf"";";
-						sizeA=747.11108;
-						sizeB=497.56396;
+						onActivation="[thisTrigger] execVM ""functions/out_of_bounds.sqf"";";
+						sizeA=750.75;
+						sizeB=498.86301;
 						repeatable=1;
 						activationType="NOT PRESENT";
 						activationBy="ANYPLAYER";
@@ -500,25 +500,25 @@ class Mission
 					};
 					id=161;
 					type="EmptyDetectorAreaR250";
-					atlOffset=2.8278694;
+					atlOffset=2.4659996;
 				};
 				class Item5
 				{
 					dataType="Logic";
 					class PositionInfo
 					{
-						position[]={8250.4551,41.606377,10511.091};
+						position[]={8249.375,41.606377,10500.273};
 					};
-					areaSize[]={750.72095,0,491.68262};
+					areaSize[]={749.64136,0,498.92188};
 					areaIsRectangle=1;
 					flags=1;
 					id=159;
 					type="ModuleCoverMap_F";
-					atlOffset=4.7826004;
+					atlOffset=5.421608;
 				};
 			};
 			id=168;
-			atlOffset=-186.36612;
+			atlOffset=-183.83115;
 		};
 		class Item1
 		{
@@ -1005,11 +1005,11 @@ class Mission
 				class Item8
 				{
 					dataType="Trigger";
-					position[]={7761.0166,44.45615,10761.763};
+					position[]={7761.0171,44.456615,10761.763};
 					class Attributes
 					{
 						text="BASE PROTECTION";
-						onActivation="[thisTrigger] execVM ""functions\opfor_base.sqf"";";
+						onActivation="[thisTrigger] execVM ""functions/opfor_base.sqf"";";
 						sizeA=100;
 						sizeB=100;
 						repeatable=1;
@@ -1018,7 +1018,7 @@ class Mission
 					};
 					id=382;
 					type="EmptyDetectorAreaR50";
-					atlOffset=0.11851883;
+					atlOffset=0.11899948;
 				};
 				class Item9
 				{
@@ -8037,7 +8037,7 @@ class Mission
 							class PositionInfo
 							{
 								position[]={8177.6509,74.692688,10728.536};
-								angles[]={0,3.673306,-0};
+								angles[]={0,3.673306,0};
 							};
 							side="Empty";
 							flags=1;
@@ -8813,10 +8813,9 @@ class Mission
 					class PositionInfo
 					{
 						position[]={8887.4385,2.2879837,10669.841};
-						angles[]={-0,2.8254261,0};
+						angles[]={0,2.8254261,0};
 					};
 					side="Empty";
-					flags=4;
 					class Attributes
 					{
 						name="Arsenal_box_12";
@@ -8824,7 +8823,7 @@ class Mission
 					};
 					id=2174;
 					type="Land_vn_us_weapons_stack3";
-					atlOffset=0.23218012;
+					atlOffset=0.33499336;
 					class CustomAttributes
 					{
 						class Attribute0
@@ -9001,7 +9000,7 @@ class Mission
 					};
 					id=1504;
 					type="Land_vn_us_weapons_stack3";
-					atlOffset=1.499614;
+					atlOffset=1.4996139;
 					class CustomAttributes
 					{
 						class Attribute0
@@ -9515,12 +9514,12 @@ class Mission
 				class Item30
 				{
 					dataType="Trigger";
-					position[]={8850.5283,19.127697,10659.447};
-					angle=5.4977851;
+					position[]={8850.5283,19.127607,10659.447};
+					angle=5.497787;
 					class Attributes
 					{
 						text="BASE PROTECTION";
-						onActivation="[thisTrigger] execVM ""functions\blufor_base.sqf"";";
+						onActivation="[thisTrigger] execVM ""functions/blufor_base.sqf"";";
 						sizeA=100;
 						sizeB=100;
 						repeatable=1;
@@ -9529,7 +9528,7 @@ class Mission
 					};
 					id=383;
 					type="EmptyDetectorAreaR50";
-					atlOffset=17.842089;
+					atlOffset=17.841999;
 				};
 				class Item31
 				{
@@ -9777,7 +9776,7 @@ class Mission
 				};
 			};
 			id=173;
-			atlOffset=4.1415854;
+			atlOffset=4.1415844;
 		};
 		class Item3
 		{

@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=1595;
+		nextID=1612;
 	};
 	class Camera
 	{
-		pos[]={14712.93,512.60449,18169.787};
-		dir[]={0.19685905,-0.71491927,-0.67092258};
-		up[]={0.20128277,0.69920695,-0.68599927};
-		aside[]={-0.95954788,0,-0.28154615};
+		pos[]={14483.114,278.27573,18043.658};
+		dir[]={0.092875265,-0.6596235,0.74586922};
+		up[]={0.081508033,0.75158012,0.65458512};
+		aside[]={0.99236357,4.0900159e-07,-0.12356866};
 	};
 };
 binarizationWanted=0;
@@ -449,13 +449,13 @@ class Mission
 				class Item4
 				{
 					dataType="Trigger";
-					position[]={14241.915,0.00046241283,18161.625};
+					position[]={14241.915,0.00086593628,18161.625};
 					class Attributes
 					{
 						text="outofbounds";
-						onActivation="[thisTrigger] execVM ""functions\out_of_bounds.sqf"";";
-						sizeA=649.81787;
-						sizeB=514.33887;
+						onActivation="[thisTrigger] execVM ""functions/out_of_bounds.sqf"";";
+						sizeA=649.81799;
+						sizeB=514.33899;
 						repeatable=1;
 						activationType="NOT PRESENT";
 						activationBy="ANYPLAYER";
@@ -464,7 +464,7 @@ class Mission
 					};
 					id=161;
 					type="EmptyDetectorAreaR250";
-					atlOffset=-6.7824035;
+					atlOffset=-6.7820001;
 				};
 				class Item5
 				{
@@ -483,7 +483,7 @@ class Mission
 				};
 			};
 			id=168;
-			atlOffset=-86.85276;
+			atlOffset=-86.852661;
 		};
 		class Item1
 		{
@@ -1374,7 +1374,7 @@ class Mission
 					class Attributes
 					{
 						text="BASE PROTECTION";
-						onActivation="[thisTrigger] execVM ""functions\opfor_base.sqf"";";
+						onActivation="[thisTrigger] execVM ""functions/opfor_base.sqf"";";
 						sizeA=100;
 						sizeB=100;
 						repeatable=1;
@@ -5458,11 +5458,11 @@ class Mission
 				{
 					dataType="Trigger";
 					position[]={14699.11,4.9322805,18380.354};
-					angle=5.4977851;
+					angle=5.497787;
 					class Attributes
 					{
 						text="BASE PROTECTION";
-						onActivation="[thisTrigger] execVM ""functions\blufor_base.sqf"";";
+						onActivation="[thisTrigger] execVM ""functions/blufor_base.sqf"";";
 						sizeA=100;
 						sizeB=100;
 						repeatable=1;

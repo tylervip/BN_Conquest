@@ -57,7 +57,7 @@ onMapSingleClick {
                 if ({ side _x2 != _side && _x2 distance2D _x < _safeRadius } count allUnits > 0) then {
                     _enemyNearbyMember = _x;
                 } else {
-                    _finalPos = getPosATL _x;
+                    _finalPos = _x modelToWorld [0, -2, 0];
                     // Check if teammate is in a vehicle with room
                     private _veh = vehicle _x;
                     if (_veh != _x) then {
@@ -123,7 +123,7 @@ onMapSingleClick {
                     ];
 
                     if (
-                        nearestObjects [_candidatePos, ["House","Building", "Thing", "Static"], 5] isEqualTo [] &&
+                        nearestObjects [_candidatePos, ["House","Building", "Thing", "Static"], 10] isEqualTo [] &&
                         nearestObjects [_candidatePos, ["ROCK"], 20] isEqualTo [] &&
                         nearestTerrainObjects [_candidatePos, ["TREE"], 2] isEqualTo [] &&
                         nearestTerrainObjects [_candidatePos, ["ROCK"], 30] isEqualTo [] &&
