@@ -22,14 +22,13 @@ _success = false;
 
 _grenade = player getVariable ["LEON_COD_pickedGrenade", objNull];
 if (!isNull _grenade) then {
+	player playActionnow "ThrowGrenade";
+	sleep 0.5;
 	_up = getCameraViewDirection player;
 	_dir = direction player;
 	_velocity = velocity player;
 	_handOffset = player selectionPosition ["RightHand", "Memory"];
 	_handPos = player modelToWorld (_handOffset vectorAdd [0,0,0.5]);
-
-	player playActionnow "ThrowGrenade";
-	sleep 0.5;
 	detach _grenade;
 	player setVariable ["LEON_COD_pickedGrenade", objNull];
 
