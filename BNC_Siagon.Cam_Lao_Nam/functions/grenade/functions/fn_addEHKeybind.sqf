@@ -22,8 +22,10 @@ if (!isNil "LEON_COD_keyDownID") exitWith {};
 
 LEON_COD_keyDownID = (findDisplay 46) displayAddEventHandler ["KeyDown", {
 	_handler = false;
-	// Check if the throw key is pressed (default: G)
-	if ((_this select 1) in actionKeys "throw") then {
+	_keyCode = _this select 1;
+	
+	// Key code 22 is G
+	if (_keyCode == 22) then {
 		// G: Pick up nearby grenade and throw it, or throw equipped grenade
 		if ([player] call LEON_COD_fnc_isUnitAwake && count LEON_COD_PickableGrenades > 0) then {
 			private _grenadeObj = LEON_COD_PickableGrenades select 0;
