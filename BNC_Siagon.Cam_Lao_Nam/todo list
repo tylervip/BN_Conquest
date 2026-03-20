@@ -2,6 +2,7 @@
 todo list
 ARSENAL initialization 
 look at keeping KSs on dead body's
+add delete_Group to fn_registerEH
 //file structure cleenup
 "Reorganize my Arma 3 mission files into the BNC function structure. Move all loose .sqf files into functions/gameplay/ and functions/respawn/ folders. Update functions.hpp with BNC tag and proper file paths. Convert all execVM calls to function calls using BNC_fnc_ prefix. Delete unused files (mobile_respawn_marker.sqf and mobile_respawn_teleport.sqf)."
 */

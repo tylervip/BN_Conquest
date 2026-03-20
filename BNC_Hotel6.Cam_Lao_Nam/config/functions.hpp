@@ -1,4 +1,4 @@
-//functions.hpp
+﻿//functions.hpp
 class CfgFunctions {
 
 	class map
@@ -47,8 +47,8 @@ class CfgFunctions {
 			file = "functions\grenade\functions";
 			
 			class preInit { preInit = 1; };
-			class addEHKeybind {};
 			class draw3DIcon {};
+			class handleThrowGrenade {};
 			class isUnitAwake {};
 			class isUnitDown {};
 			class onKeyDown {};
@@ -105,6 +105,10 @@ class CfgFunctions {
 			class opforBase {};
 			class bluforBase {};
 		};
+		class utils {
+			file = "functions";
+			class toggleEarplugs {};
+		};
 	};
 
 	
@@ -112,4 +116,41 @@ class CfgFunctions {
 	#include "..\functions\vcomai\Vcom\cfgFunctions.hpp"
 	
 
+// Paradigm Keybinding System
+class para_c
+{
+tag = "para_c";
+
+class keyhandler
+{
+file = "functions\keyhandler";
+class init_key_down {};
+class init_key_up {};
+class change_key_bind {};
+class get_key_bind {};
+class getKeyName {};
+class eh_key_down {};
+class eh_key_up {};
+class initKeyHandlers { postInit = 1; };
+};
+
+class ui_core
+{
+file = "functions\ui";
+class initEscapeMenu { postInit = 1; };
+class ui_initMissionDisplay {};
+};
+
+class keybindings_menu
+{
+file = "functions\ui\keybindings_menu";
+class para_RscDisplayKeybindingsMenu {};
+class keybindingsMenu_onLoad {};
+class keybindingsMenu_onUnload {};
+class keybindingsMenu_editBind {};
+class keybindingsMenu_editBind_input {};
+class keybindingsMenu_reset {};
+class keybindingsMenu_updateColors {};
+};
+};
 };

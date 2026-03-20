@@ -1,4 +1,4 @@
-class Header
+﻿class Header
 {
 	gameType = "SC";
 	minPlayers = 1;
@@ -67,3 +67,4 @@ skipLobby = 0;
 //Show melee weapons in the arsenal
 vn_arsenalShowMelee = 1;
 #include "config\init.hpp"
+#include "config\ui\ui_main.hpp"

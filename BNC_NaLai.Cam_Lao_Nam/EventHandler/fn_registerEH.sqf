@@ -31,4 +31,3 @@ if (isPlayer _unit) then {
         };
     }];
 };
-

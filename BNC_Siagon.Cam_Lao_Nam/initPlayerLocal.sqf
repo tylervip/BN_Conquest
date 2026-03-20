@@ -30,3 +30,4 @@ player enableFatigue false;
 
 // Initialize curator for player
 [player] call BNC_fnc_curator_init;
+

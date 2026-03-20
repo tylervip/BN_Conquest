@@ -23,10 +23,7 @@ LEON_COD_PickableGrenades = [];
 LEON_COD_LastThrownGrenade = objNull;  // Track the last grenade thrown
 
 [] spawn {
-	waitUntil { !isNull (findDisplay 46) };
-	
-	// Initialize the keybind and 3D icon system
-	call LEON_COD_fnc_addEHKeybind;
+	// Initialize the 3D icon system
 	call LEON_COD_fnc_draw3DIcon;
 	
 	// Main loop - detect nearby grenades
