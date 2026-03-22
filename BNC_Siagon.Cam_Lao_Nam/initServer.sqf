@@ -10,7 +10,7 @@ if (isServer) then {
         if (!isNull _unit) then {
             deleteVehicle _unit;
             private _grp = group _unit;
-            if (_grp != objNull) then {
+            if (!isNull _grp) then {
                 if (count (units _grp) == 0 && {count (units _grp select {isPlayer _x}) == 0}) then {
                     deleteGroup _grp;
                 };
