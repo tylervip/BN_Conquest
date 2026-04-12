@@ -601,7 +601,7 @@ class Mission
 {
 	class Intel
 	{
-		briefingName="BN_Conquest_LingHoBase";
+		briefingName="BN_Conquest_Saigon";
 		timeOfChanges=1800.0002;
 		startWeather=0.2;
 		startWind=0.1;
