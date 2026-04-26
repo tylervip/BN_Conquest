@@ -64,6 +64,9 @@ class CfgFunctions {
 			class init {};
 			class initMarkers {};
 			class initTeleport {};
+			class serverRespawnLoop {};
+			class refreshVehicleRefs {};
+			class addVehicleActions {};
 		};
 		class markers {
 			file = "mobile_respawn";

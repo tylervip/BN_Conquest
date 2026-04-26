@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=1612;
+		nextID=1629;
 	};
 	class Camera
 	{
-		pos[]={14483.114,278.27573,18043.658};
-		dir[]={0.092875265,-0.6596235,0.74586922};
-		up[]={0.081508033,0.75158012,0.65458512};
-		aside[]={0.99236357,4.0900159e-07,-0.12356866};
+		pos[]={13853.732,37.975731,18313.268};
+		dir[]={-0.0489695,-0.6128909,0.78864872};
+		up[]={-0.037983038,0.79016757,0.61171281};
+		aside[]={0.99807787,3.7252903e-09,0.061973568};
 	};
 };
 binarizationWanted=0;
@@ -38,13 +38,13 @@ addons[]=
 	"wheeled_f_vietnam_c",
 	"objects_f_vietnam_c",
 	"armor_f_vietnam_03_c",
-	"A3_Modules_F_Multiplayer",
 	"A3_Modules_F",
 	"A3_Structures_F_Mil_Helipads",
 	"static_f_vietnam_02_c",
 	"boat_f_vietnam_02_c",
 	"A3_Structures_F_Civ_InfoBoards",
 	"characters_f_vietnam_c",
+	"A3_Modules_F_Multiplayer",
 	"A3_Missions_F_Curator",
 	"A3_Modules_F_Curator_Multiplayer",
 	"modules_f_vietnam",
@@ -491,7 +491,7 @@ class Mission
 			name="USA Bace";
 			class Entities
 			{
-				items=38;
+				items=37;
 				class Item0
 				{
 					dataType="Object";
@@ -1162,152 +1162,6 @@ class Mission
 				};
 				class Item17
 				{
-					dataType="Logic";
-					class PositionInfo
-					{
-						position[]={13845.73,5.9130855,18362.336};
-						angles[]={0.07386519,2.0720985,6.2671871};
-					};
-					id=147;
-					type="ModuleRespawnVehicle_F";
-					atlOffset=0.037680149;
-					class CustomAttributes
-					{
-						class Attribute0
-						{
-							property="ModuleRespawnVehicle_F_ForcedRespawn";
-							expression="_this setVariable ['ForcedRespawn',_value,true];";
-							class Value
-							{
-								class data
-								{
-									singleType="STRING";
-									value="0";
-								};
-							};
-						};
-						class Attribute1
-						{
-							property="ModuleRespawnVehicle_F_Init";
-							expression="_this setVariable ['Init',_value,true];";
-							class Value
-							{
-								class data
-								{
-									singleType="STRING";
-									value="";
-								};
-							};
-						};
-						class Attribute2
-						{
-							property="ModuleRespawnVehicle_F_RespawnWhenDisabled";
-							expression="_this setVariable ['RespawnWhenDisabled',_value,true];";
-							class Value
-							{
-								class data
-								{
-									singleType="BOOL";
-									value=0;
-								};
-							};
-						};
-						class Attribute3
-						{
-							property="ModuleRespawnVehicle_F_DesertedDistance";
-							expression="_this setVariable ['DesertedDistance',_value,true];";
-							class Value
-							{
-								class data
-								{
-									singleType="STRING";
-									value="";
-								};
-							};
-						};
-						class Attribute4
-						{
-							property="ModuleRespawnVehicle_F_PositionType";
-							expression="_this setVariable ['PositionType',_value,true];";
-							class Value
-							{
-								class data
-								{
-									singleType="STRING";
-									value="0";
-								};
-							};
-						};
-						class Attribute5
-						{
-							property="ModuleRespawnVehicle_F_RespawnCount";
-							expression="_this setVariable ['RespawnCount',_value,true];";
-							class Value
-							{
-								class data
-								{
-									singleType="STRING";
-									value="";
-								};
-							};
-						};
-						class Attribute6
-						{
-							property="ModuleRespawnVehicle_F_Position";
-							expression="_this setVariable ['Position',_value,true];";
-							class Value
-							{
-								class data
-								{
-									singleType="STRING";
-									value="0";
-								};
-							};
-						};
-						class Attribute7
-						{
-							property="ModuleRespawnVehicle_F_Wreck";
-							expression="_this setVariable ['Wreck',_value,true];";
-							class Value
-							{
-								class data
-								{
-									singleType="STRING";
-									value="2";
-								};
-							};
-						};
-						class Attribute8
-						{
-							property="ModuleRespawnVehicle_F_Delay";
-							expression="_this setVariable ['Delay',_value,true];";
-							class Value
-							{
-								class data
-								{
-									singleType="STRING";
-									value="120";
-								};
-							};
-						};
-						class Attribute9
-						{
-							property="ModuleRespawnVehicle_F_ShowNotification";
-							expression="_this setVariable ['ShowNotification',_value,true];";
-							class Value
-							{
-								class data
-								{
-									singleType="STRING";
-									value="0";
-								};
-							};
-						};
-						nAttributes=10;
-					};
-				};
-				class Item18
-				{
 					dataType="Marker";
 					position[]={13906.5,6.25,18345.125};
 					name="west_AI_spawn";
@@ -1317,7 +1171,7 @@ class Mission
 					id=202;
 					atlOffset=0.25979471;
 				};
-				class Item19
+				class Item18
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1353,7 +1207,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item20
+				class Item19
 				{
 					dataType="Marker";
 					position[]={13850.375,6.25,18349.875};
@@ -1367,7 +1221,7 @@ class Mission
 					id=385;
 					atlOffset=-0.021755695;
 				};
-				class Item21
+				class Item20
 				{
 					dataType="Trigger";
 					position[]={13850.31,6.2571797,18349.91};
@@ -1385,7 +1239,7 @@ class Mission
 					type="EmptyDetectorAreaR50";
 					atlOffset=-0.015999317;
 				};
-				class Item22
+				class Item21
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1433,7 +1287,7 @@ class Mission
 						nAttributes=2;
 					};
 				};
-				class Item23
+				class Item22
 				{
 					dataType="Layer";
 					name="hide";
@@ -1489,7 +1343,7 @@ class Mission
 					id=974;
 					atlOffset=-0.31699944;
 				};
-				class Item24
+				class Item23
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1536,7 +1390,7 @@ class Mission
 						nAttributes=2;
 					};
 				};
-				class Item25
+				class Item24
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1572,7 +1426,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item26
+				class Item25
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1608,7 +1462,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item27
+				class Item26
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1644,7 +1498,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item28
+				class Item27
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1680,7 +1534,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item29
+				class Item28
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1716,7 +1570,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item30
+				class Item29
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1764,7 +1618,7 @@ class Mission
 						nAttributes=2;
 					};
 				};
-				class Item31
+				class Item30
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1782,7 +1636,7 @@ class Mission
 					type="vn_b_navy_static_l60mk3";
 					atlOffset=0.015999317;
 				};
-				class Item32
+				class Item31
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1932,7 +1786,7 @@ class Mission
 						nAttributes=3;
 					};
 				};
-				class Item33
+				class Item32
 				{
 					dataType="Object";
 					class PositionInfo
@@ -2082,7 +1936,7 @@ class Mission
 						nAttributes=3;
 					};
 				};
-				class Item34
+				class Item33
 				{
 					dataType="Marker";
 					position[]={13859.5,6.625,18309};
@@ -2093,7 +1947,7 @@ class Mission
 					id=1029;
 					atlOffset=0.038024902;
 				};
-				class Item35
+				class Item34
 				{
 					dataType="Object";
 					class PositionInfo
@@ -2141,7 +1995,7 @@ class Mission
 						nAttributes=2;
 					};
 				};
-				class Item36
+				class Item35
 				{
 					dataType="Layer";
 					name="players";
@@ -3176,7 +3030,7 @@ class Mission
 					id=1592;
 					atlOffset=-0.003100872;
 				};
-				class Item37
+				class Item36
 				{
 					dataType="Layer";
 					name="walls";
@@ -5458,7 +5312,7 @@ class Mission
 				{
 					dataType="Trigger";
 					position[]={14699.11,4.9322805,18380.354};
-					angle=5.497787;
+					angle=5.497786;
 					class Attributes
 					{
 						text="BASE PROTECTION";
@@ -36168,11 +36022,11 @@ class Mission
 	{
 		class LinkIDProvider
 		{
-			nextID=33;
+			nextID=32;
 		};
 		class Links
 		{
-			items=33;
+			items=32;
 			class Item0
 			{
 				linkID=0;
@@ -36356,8 +36210,8 @@ class Mission
 			class Item18
 			{
 				linkID=18;
-				item0=147;
-				item1=146;
+				item0=157;
+				item1=155;
 				class CustomData
 				{
 					type="Sync";
@@ -36367,7 +36221,7 @@ class Mission
 			{
 				linkID=19;
 				item0=157;
-				item1=155;
+				item1=156;
 				class CustomData
 				{
 					type="Sync";
@@ -36376,8 +36230,8 @@ class Mission
 			class Item20
 			{
 				linkID=20;
-				item0=157;
-				item1=156;
+				item0=1031;
+				item1=145;
 				class CustomData
 				{
 					type="Sync";
@@ -36386,7 +36240,7 @@ class Mission
 			class Item21
 			{
 				linkID=21;
-				item0=1031;
+				item0=1032;
 				item1=145;
 				class CustomData
 				{
@@ -36396,8 +36250,8 @@ class Mission
 			class Item22
 			{
 				linkID=22;
-				item0=1032;
-				item1=145;
+				item0=1521;
+				item1=157;
 				class CustomData
 				{
 					type="Sync";
@@ -36406,7 +36260,7 @@ class Mission
 			class Item23
 			{
 				linkID=23;
-				item0=1521;
+				item0=1497;
 				item1=157;
 				class CustomData
 				{
@@ -36416,7 +36270,7 @@ class Mission
 			class Item24
 			{
 				linkID=24;
-				item0=1497;
+				item0=1498;
 				item1=157;
 				class CustomData
 				{
@@ -36426,7 +36280,7 @@ class Mission
 			class Item25
 			{
 				linkID=25;
-				item0=1498;
+				item0=1499;
 				item1=157;
 				class CustomData
 				{
@@ -36436,7 +36290,7 @@ class Mission
 			class Item26
 			{
 				linkID=26;
-				item0=1499;
+				item0=1504;
 				item1=157;
 				class CustomData
 				{
@@ -36446,7 +36300,7 @@ class Mission
 			class Item27
 			{
 				linkID=27;
-				item0=1504;
+				item0=1500;
 				item1=157;
 				class CustomData
 				{
@@ -36456,7 +36310,7 @@ class Mission
 			class Item28
 			{
 				linkID=28;
-				item0=1500;
+				item0=1501;
 				item1=157;
 				class CustomData
 				{
@@ -36466,7 +36320,7 @@ class Mission
 			class Item29
 			{
 				linkID=29;
-				item0=1501;
+				item0=1502;
 				item1=157;
 				class CustomData
 				{
@@ -36476,7 +36330,7 @@ class Mission
 			class Item30
 			{
 				linkID=30;
-				item0=1502;
+				item0=1503;
 				item1=157;
 				class CustomData
 				{
@@ -36486,16 +36340,6 @@ class Mission
 			class Item31
 			{
 				linkID=31;
-				item0=1503;
-				item1=157;
-				class CustomData
-				{
-					type="Sync";
-				};
-			};
-			class Item32
-			{
-				linkID=32;
 				item0=1528;
 				item1=157;
 				class CustomData

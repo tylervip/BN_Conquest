@@ -19,6 +19,8 @@ params ["_side"];
 
 private _vehicle = objNull;
 
+if (isNil "MRS_vehicles") exitWith { objNull };
+
 {
     _x params ["_veh", "_marker", "_vehSide"];
     if (_vehSide == _side) exitWith {

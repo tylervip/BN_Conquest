@@ -10,49 +10,41 @@
         call MRS_fnc_init;
 */
 
-if (!hasInterface) exitWith {};
-
 // Wait for vehicles to be initialized
 waitUntil { !isNil "mobile_respawn" && !isNil "mobile_respawn_1" };
 
-// Define vehicle configurations
-// Format: [vehicleObject, markerName, side]
-MRS_vehicles = [
-    [mobile_respawn, "marker_mobile_blu", west],
-    [mobile_respawn_1, "marker_mobile_red", east]
+// Shared definitions
+// Format: [vehicleVarName, markerName, side]
+MRS_vehicleDefs = [
+    ["mobile_respawn", "marker_mobile_blu", west],
+    ["mobile_respawn_1", "marker_mobile_red", east]
 ];
 
-// Add loadout restoration action to each vehicle
-{
-    _x params ["_vehicle"];
-    _vehicle addAction [
-        "<t color='#00ff00'>Restore Loadout</t>",
-        {
-            if (player getVariable ["loadoutCooldown", 0] > time) exitWith {
-                private _remaining = (player getVariable ["loadoutCooldown", 0]) - time;
-                hint format ["Loadout restore on cooldown! %1 seconds remaining", ceil _remaining];
-            };
-            player setVariable ["loadoutCooldown", time + 60];
-            player setUnitLoadout (player getVariable ["SavedLoadout", []]);
-            hint "Loadout restored!";
-        },
-        nil,
-        1.5,
-        false,
-        true,
-        "",
-        "_this distance _target < 5"
-    ];
-} forEach MRS_vehicles;
+if (isServer) then {
+    publicVariable "MRS_vehicleDefs";
+
+    // Seconds before a destroyed command vehicle is recreated.
+    MRS_respawnDelay = 120;
+    publicVariable "MRS_respawnDelay";
+
+    if (isNil "MRS_serverRespawnLoop") then {
+        MRS_serverRespawnLoop = [] spawn MRS_fnc_serverRespawnLoop;
+    };
+};
+
+if (!hasInterface) exitWith {};
+
+waitUntil { !isNil "MRS_vehicleDefs" };
+call MRS_fnc_refreshVehicleRefs;
 
 // Define teleport sign configurations
-// Format: [signObject, vehicleObject]
+// Format: [signObject, side]
 MRS_teleportPairs = [];
 if (!isNil "mobile_respawn_teleport" && {!isNull mobile_respawn_teleport}) then {
-    MRS_teleportPairs pushBack [mobile_respawn_teleport, mobile_respawn];
+    MRS_teleportPairs pushBack [mobile_respawn_teleport, west];
 };
 if (!isNil "mobile_respawn_teleport_1" && {!isNull mobile_respawn_teleport_1}) then {
-    MRS_teleportPairs pushBack [mobile_respawn_teleport_1, mobile_respawn_1];
+    MRS_teleportPairs pushBack [mobile_respawn_teleport_1, east];
 };
 
 // Initialize subsystems using spawn to ensure functions are available
@@ -62,6 +54,18 @@ if (!isNil "mobile_respawn_teleport_1" && {!isNull mobile_respawn_teleport_1}) t
     
     call MRS_fnc_initMarkers;
     call MRS_fnc_initTeleport;
+
+    if (!isNil "MRS_refreshLoop") then {
+        terminate MRS_refreshLoop;
+    };
+
+    // Keep client references current after server recreates vehicles.
+    MRS_refreshLoop = [] spawn {
+        while {true} do {
+            call MRS_fnc_refreshVehicleRefs;
+            uiSleep 2;
+        };
+    };
     
     diag_log "[Mobile Respawn] System initialized";
 };

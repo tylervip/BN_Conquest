@@ -10,13 +10,21 @@
 */
 
 {
-    _x params ["_sign", "_vehicle"];
+    _x params ["_sign", "_side"];
+
+    if (_sign getVariable ["MRS_teleportActionAdded", false]) then { continue };
+    _sign setVariable ["MRS_teleportActionAdded", true];
     
     _sign addAction [
         "<t color='#FFFF00'>Command Tank</t>",
         {
             params ["_target", "_caller", "_actionId", "_args"];
-            private _vehicle = _args select 0;
+            private _side = _args select 0;
+            private _vehicle = [_side] call MRS_fnc_getVehicleForSide;
+
+            if (isNull _vehicle || {!alive _vehicle}) exitWith {
+                hint "Mobile respawn is unavailable right now.";
+            };
             
             // Check if vehicle is moving
             private _pos1 = getPosATL _vehicle;
@@ -34,7 +42,7 @@
                 };
             };
         },
-        [_vehicle],
+        [_side],
         1,
         false,
         true,

@@ -25,6 +25,7 @@ if (!alive _vehicle) exitWith { false };
 
 // Get vehicle's side from config
 private _vehicleSide = sideUnknown;
+if (isNil "MRS_vehicles") exitWith { false };
 {
     _x params ["_veh", "_marker", "_vehSide"];
     if (_veh == _vehicle) exitWith {
