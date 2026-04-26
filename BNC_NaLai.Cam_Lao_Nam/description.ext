@@ -63,7 +63,7 @@ joinUnassigned = 1;
 forceRotorLibSimulation = 0;
 saving = 1;
 skipLobby = 0;
-autoInit = 0;
+autoInit = 1;
 
 //Show melee weapons in the arsenal
 vn_arsenalShowMelee = 1;
