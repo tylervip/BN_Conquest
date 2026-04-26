@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=1629;
+		nextID=1646;
 	};
 	class Camera
 	{
-		pos[]={13853.732,37.975731,18313.268};
-		dir[]={-0.0489695,-0.6128909,0.78864872};
-		up[]={-0.037983038,0.79016757,0.61171281};
-		aside[]={0.99807787,3.7252903e-09,0.061973568};
+		pos[]={13881.459,64.864662,18282.936};
+		dir[]={-0.048969511,-0.61289066,0.7886489};
+		up[]={-0.037983019,0.79016769,0.61171257};
+		aside[]={0.99807781,0,0.061973564};
 	};
 };
 binarizationWanted=0;
@@ -389,7 +389,7 @@ class Mission
 			name="black out";
 			class Entities
 			{
-				items=6;
+				items=5;
 				class Item0
 				{
 					dataType="Marker";
@@ -448,26 +448,6 @@ class Mission
 				};
 				class Item4
 				{
-					dataType="Trigger";
-					position[]={14241.915,0.00086593628,18161.625};
-					class Attributes
-					{
-						text="outofbounds";
-						onActivation="[thisTrigger] call BNC_fnc_outOfBounds;";
-						sizeA=649.81799;
-						sizeB=514.33899;
-						repeatable=1;
-						activationType="NOT PRESENT";
-						activationBy="ANYPLAYER";
-						isRectangle=1;
-						effectTitle="RscNoise";
-					};
-					id=161;
-					type="EmptyDetectorAreaR250";
-					atlOffset=-6.7820001;
-				};
-				class Item5
-				{
 					dataType="Logic";
 					class PositionInfo
 					{
@@ -483,7 +463,7 @@ class Mission
 				};
 			};
 			id=168;
-			atlOffset=-86.852661;
+			atlOffset=-40.224792;
 		};
 		class Item1
 		{
@@ -491,7 +471,7 @@ class Mission
 			name="USA Bace";
 			class Entities
 			{
-				items=37;
+				items=36;
 				class Item0
 				{
 					dataType="Object";
@@ -1211,7 +1191,7 @@ class Mission
 				{
 					dataType="Marker";
 					position[]={13850.375,6.25,18349.875};
-					name="marker_10";
+					name="blufor_protection";
 					markerType="ELLIPSE";
 					type="";
 					colorName="ColorWEST";
@@ -1222,24 +1202,6 @@ class Mission
 					atlOffset=-0.021755695;
 				};
 				class Item20
-				{
-					dataType="Trigger";
-					position[]={13850.31,6.2571797,18349.91};
-					class Attributes
-					{
-						text="BASE PROTECTION";
-						onActivation="[thisTrigger] call BNC_fnc_opforBase;";
-						sizeA=100;
-						sizeB=100;
-						repeatable=1;
-						activationBy="EAST";
-						triggerInterval=0.1;
-					};
-					id=382;
-					type="EmptyDetectorAreaR50";
-					atlOffset=-0.015999317;
-				};
-				class Item21
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1287,7 +1249,7 @@ class Mission
 						nAttributes=2;
 					};
 				};
-				class Item22
+				class Item21
 				{
 					dataType="Layer";
 					name="hide";
@@ -1343,7 +1305,7 @@ class Mission
 					id=974;
 					atlOffset=-0.31699944;
 				};
-				class Item23
+				class Item22
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1390,7 +1352,7 @@ class Mission
 						nAttributes=2;
 					};
 				};
-				class Item24
+				class Item23
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1426,7 +1388,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item25
+				class Item24
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1462,7 +1424,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item26
+				class Item25
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1498,7 +1460,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item27
+				class Item26
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1534,7 +1496,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item28
+				class Item27
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1570,7 +1532,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item29
+				class Item28
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1618,7 +1580,7 @@ class Mission
 						nAttributes=2;
 					};
 				};
-				class Item30
+				class Item29
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1636,7 +1598,7 @@ class Mission
 					type="vn_b_navy_static_l60mk3";
 					atlOffset=0.015999317;
 				};
-				class Item31
+				class Item30
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1786,7 +1748,7 @@ class Mission
 						nAttributes=3;
 					};
 				};
-				class Item32
+				class Item31
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1936,7 +1898,7 @@ class Mission
 						nAttributes=3;
 					};
 				};
-				class Item33
+				class Item32
 				{
 					dataType="Marker";
 					position[]={13859.5,6.625,18309};
@@ -1947,7 +1909,7 @@ class Mission
 					id=1029;
 					atlOffset=0.038024902;
 				};
-				class Item34
+				class Item33
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1995,7 +1957,7 @@ class Mission
 						nAttributes=2;
 					};
 				};
-				class Item35
+				class Item34
 				{
 					dataType="Layer";
 					name="players";
@@ -3030,7 +2992,7 @@ class Mission
 					id=1592;
 					atlOffset=-0.003100872;
 				};
-				class Item36
+				class Item35
 				{
 					dataType="Layer";
 					name="walls";
@@ -4272,7 +4234,7 @@ class Mission
 				};
 			};
 			id=172;
-			atlOffset=0.69924641;
+			atlOffset=0.69924736;
 		};
 		class Item2
 		{
@@ -4280,7 +4242,7 @@ class Mission
 			name="PAVN Bace";
 			class Entities
 			{
-				items=30;
+				items=29;
 				class Item0
 				{
 					dataType="Object";
@@ -5296,8 +5258,8 @@ class Mission
 				class Item20
 				{
 					dataType="Marker";
-					position[]={14699.173,5.0429444,18380.355};
-					name="marker_9";
+					position[]={14699.173,5.0430002,18380.355};
+					name="opfor_protection";
 					markerType="ELLIPSE";
 					type="";
 					colorName="ColorEAST";
@@ -5306,28 +5268,9 @@ class Mission
 					b=100;
 					angle=314.99988;
 					id=384;
-					atlOffset=0.23724604;
+					atlOffset=0.23730183;
 				};
 				class Item21
-				{
-					dataType="Trigger";
-					position[]={14699.11,4.9322805,18380.354};
-					angle=5.497786;
-					class Attributes
-					{
-						text="BASE PROTECTION";
-						onActivation="[thisTrigger] call BNC_fnc_bluforBase;";
-						sizeA=100;
-						sizeB=100;
-						repeatable=1;
-						activationBy="WEST";
-						triggerInterval=0.1;
-					};
-					id=383;
-					type="EmptyDetectorAreaR50";
-					atlOffset=0.12699986;
-				};
-				class Item22
 				{
 					dataType="Layer";
 					name="player_red";
@@ -6906,7 +6849,7 @@ class Mission
 					id=391;
 					atlOffset=-0.023219585;
 				};
-				class Item23
+				class Item22
 				{
 					dataType="Layer";
 					name="walls";
@@ -8449,7 +8392,7 @@ class Mission
 					id=392;
 					atlOffset=-0.021223545;
 				};
-				class Item24
+				class Item23
 				{
 					dataType="Layer";
 					name="Hide Terrain";
@@ -8594,7 +8537,7 @@ class Mission
 					id=74;
 					atlOffset=0.30517101;
 				};
-				class Item25
+				class Item24
 				{
 					dataType="Object";
 					class PositionInfo
@@ -8629,7 +8572,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item26
+				class Item25
 				{
 					dataType="Object";
 					class PositionInfo
@@ -8664,7 +8607,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item27
+				class Item26
 				{
 					dataType="Object";
 					class PositionInfo
@@ -8700,7 +8643,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item28
+				class Item27
 				{
 					dataType="Object";
 					class PositionInfo
@@ -8735,7 +8678,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item29
+				class Item28
 				{
 					dataType="Object";
 					class PositionInfo
@@ -8772,7 +8715,7 @@ class Mission
 				};
 			};
 			id=173;
-			atlOffset=0.010375023;
+			atlOffset=0.010068417;
 		};
 		class Item3
 		{

@@ -102,8 +102,8 @@ class CfgFunctions {
 			file = "functions";
 			class curator_init {};
 		};
-		class gameplay {
-			file = "functions";
+		class outOfBounds {
+			file = "functions\outOfBounds";
 			class outOfBounds {};
 			class opforBase {};
 			class bluforBase {};

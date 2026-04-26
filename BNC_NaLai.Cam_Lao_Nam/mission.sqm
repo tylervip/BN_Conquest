@@ -16,7 +16,7 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=1656;
+		nextID=1669;
 	};
 	class Camera
 	{
@@ -466,7 +466,7 @@ class Mission
 			name="USA Bace";
 			class Entities
 			{
-				items=40;
+				items=39;
 				class Item0
 				{
 					dataType="Object";
@@ -1189,8 +1189,8 @@ class Mission
 				class Item19
 				{
 					dataType="Marker";
-					position[]={18054.227,6.7301245,9551.4795};
-					name="marker_10";
+					position[]={18054.227,6.73,9551.4805};
+					name="blufor_protection";
 					markerType="ELLIPSE";
 					type="";
 					colorName="ColorWEST";
@@ -1198,25 +1198,9 @@ class Mission
 					a=100;
 					b=100;
 					id=1699;
+					atlOffset=-0.0001168251;
 				};
 				class Item20
-				{
-					dataType="Trigger";
-					position[]={18054.16,6.7254806,9551.5146};
-					class Attributes
-					{
-						text="BASE PROTECTION";
-						onActivation="[thisTrigger] call BNC_fnc_opforBase;";
-						sizeA=100;
-						sizeB=100;
-						repeatable=1;
-						activationBy="EAST";
-						triggerInterval=0.1;
-					};
-					id=1700;
-					type="EmptyDetectorAreaR50";
-				};
-				class Item21
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1263,7 +1247,7 @@ class Mission
 						nAttributes=2;
 					};
 				};
-				class Item22
+				class Item21
 				{
 					dataType="Layer";
 					name="hide";
@@ -1318,7 +1302,7 @@ class Mission
 					id=1702;
 					atlOffset=4.2563229;
 				};
-				class Item23
+				class Item22
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1365,7 +1349,7 @@ class Mission
 						nAttributes=2;
 					};
 				};
-				class Item24
+				class Item23
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1401,7 +1385,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item25
+				class Item24
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1437,7 +1421,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item26
+				class Item25
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1473,7 +1457,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item27
+				class Item26
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1508,7 +1492,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item28
+				class Item27
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1544,7 +1528,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item29
+				class Item28
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1591,7 +1575,7 @@ class Mission
 						nAttributes=2;
 					};
 				};
-				class Item30
+				class Item29
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1608,7 +1592,7 @@ class Mission
 					type="vn_b_navy_static_l60mk3";
 					atlOffset=4.2068653;
 				};
-				class Item31
+				class Item30
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1758,7 +1742,7 @@ class Mission
 						nAttributes=3;
 					};
 				};
-				class Item32
+				class Item31
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1908,7 +1892,7 @@ class Mission
 						nAttributes=3;
 					};
 				};
-				class Item33
+				class Item32
 				{
 					dataType="Marker";
 					position[]={18063.352,7.4801903,9510.6045};
@@ -1918,7 +1902,7 @@ class Mission
 					colorName="ColorPink";
 					id=1714;
 				};
-				class Item34
+				class Item33
 				{
 					dataType="Object";
 					class PositionInfo
@@ -1967,7 +1951,7 @@ class Mission
 						nAttributes=2;
 					};
 				};
-				class Item35
+				class Item34
 				{
 					dataType="Layer";
 					name="players";
@@ -3002,7 +2986,7 @@ class Mission
 					id=1716;
 					atlOffset=0.00014925003;
 				};
-				class Item36
+				class Item35
 				{
 					dataType="Layer";
 					name="walls";
@@ -4205,7 +4189,7 @@ class Mission
 					id=1781;
 					atlOffset=-0.016499519;
 				};
-				class Item37
+				class Item36
 				{
 					dataType="Object";
 					class PositionInfo
@@ -4355,7 +4339,7 @@ class Mission
 						nAttributes=3;
 					};
 				};
-				class Item38
+				class Item37
 				{
 					dataType="Object";
 					class PositionInfo
@@ -4505,7 +4489,7 @@ class Mission
 						nAttributes=3;
 					};
 				};
-				class Item39
+				class Item38
 				{
 					dataType="Marker";
 					position[]={17733.129,18.540001,9834.2764};
@@ -6246,7 +6230,7 @@ class Mission
 			name="PAVN Bace";
 			class Entities
 			{
-				items=31;
+				items=30;
 				class Item0
 				{
 					dataType="Object";
@@ -7121,36 +7105,19 @@ class Mission
 				class Item19
 				{
 					dataType="Marker";
-					position[]={18280.32,35.294933,10563.583};
-					name="marker_9";
+					position[]={18280.32,35.294998,10563.583};
+					name="opfor_protection";
 					markerType="ELLIPSE";
 					type="";
 					colorName="ColorEAST";
 					alpha=0.49718651;
 					a=100;
 					b=100;
-					angle=224.99988;
+					angle=224.99998;
 					id=1844;
+					atlOffset=6.4849854e-05;
 				};
 				class Item20
-				{
-					dataType="Trigger";
-					position[]={18280.098,35.302353,10563.384};
-					angle=3.9269896;
-					class Attributes
-					{
-						text="BASE PROTECTION";
-						onActivation="[thisTrigger] call BNC_fnc_bluforBase;";
-						sizeA=100;
-						sizeB=100;
-						repeatable=1;
-						activationBy="WEST";
-						triggerInterval=0.1;
-					};
-					id=1845;
-					type="EmptyDetectorAreaR50";
-				};
-				class Item21
 				{
 					dataType="Layer";
 					name="player_red";
@@ -8665,7 +8632,7 @@ class Mission
 					id=1846;
 					atlOffset=0.0020217896;
 				};
-				class Item22
+				class Item21
 				{
 					dataType="Layer";
 					name="walls_1";
@@ -10177,7 +10144,7 @@ class Mission
 					id=1911;
 					atlOffset=-0.24152374;
 				};
-				class Item23
+				class Item22
 				{
 					dataType="Layer";
 					name="Hide Terrain";
@@ -10319,7 +10286,7 @@ class Mission
 					id=1956;
 					atlOffset=-0.62550735;
 				};
-				class Item24
+				class Item23
 				{
 					dataType="Object";
 					class PositionInfo
@@ -10355,7 +10322,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item25
+				class Item24
 				{
 					dataType="Object";
 					class PositionInfo
@@ -10390,7 +10357,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item26
+				class Item25
 				{
 					dataType="Object";
 					class PositionInfo
@@ -10425,7 +10392,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item27
+				class Item26
 				{
 					dataType="Object";
 					class PositionInfo
@@ -10461,7 +10428,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item28
+				class Item27
 				{
 					dataType="Object";
 					class PositionInfo
@@ -10497,7 +10464,7 @@ class Mission
 						nAttributes=1;
 					};
 				};
-				class Item29
+				class Item28
 				{
 					dataType="Marker";
 					position[]={18306.098,31.926001,10587.658};
@@ -10508,7 +10475,7 @@ class Mission
 					id=1965;
 					atlOffset=8.9645386e-05;
 				};
-				class Item30
+				class Item29
 				{
 					dataType="Marker";
 					position[]={18638.318,28.356001,10132.884};
@@ -10522,7 +10489,7 @@ class Mission
 				};
 			};
 			id=1823;
-			atlOffset=4.1780243;
+			atlOffset=4.1780396;
 		};
 		class Item4
 		{

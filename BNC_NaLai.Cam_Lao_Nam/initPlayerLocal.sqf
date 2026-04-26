@@ -30,3 +30,8 @@ player enableFatigue false;
 // Initialize curator for player
 [player] call BNC_fnc_curator_init;
 
+// Start zone protection watchdogs on each client.
+[] call BNC_fnc_outOfBounds;
+[] call BNC_fnc_opforBase;
+[] call BNC_fnc_bluforBase;
+
