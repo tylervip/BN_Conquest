@@ -14,7 +14,7 @@ waitUntil { count (allMissionObjects "ModuleSector_F") > 0 };
 sleep 2; // Give sectors time to fully initialize
 
 private _opforClass = "vn_o_air_mi2_04_01";
-private _bluforClass = "vn_b_air_uh1c_04_01";
+private _bluforClass = "vn_b_air_uh1c_05_02";
 private _heliCooldown = 300; // Cooldown in seconds after helicopter is destroyed
 
 // --- FIND ALL HELI SPAWN POINTS ---
